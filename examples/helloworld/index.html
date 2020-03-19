@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>VrEmuLcd Example - Hello World!</title>
+  <title>vrEmuLcd Example - Hello World!</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
     integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 </head>
@@ -14,21 +14,23 @@
 <body>
   <div id="cont" class="container">
     <div id="head" class="page-header">
-      <h1>VrEmuLcd Examples (Hello, World!)</h1>
+      <h1>Hello, World! - vrEmuLcd Examples</h1>
     </div>
-    <p class="lead">You can type text into the LCD display.<br/>&lt;Left&gt;, &lt;Right&gt; and &lt;Backspace&gt; also work.</Backspace></Right></Left></p>
+    <p class="lead">You can type text into the LCD display.<br/><br/>
+	Move the cursor with <strong>&lt;Left&gt;</strong>, <strong>&lt;Right&gt;</strong>, <strong>&lt;Up&gt;</strong>, <strong>&lt;Down&gt;</strong> and <strong>&lt;Backspace&gt;</strong>.<br/>
+	Scroll the display with <strong>&lt;Shift&gt;</strong>+<strong>&lt;Left&gt;</strong> and <strong>&lt;Shift&gt;</strong>+<strong>&lt;Right&gt;</strong></p>
     <canvas id="canv"></canvas>
   </div>
 
   <footer class="footer">
     <div class="container">
       <p class="text-muted">Copyright (c) 2020 Troy Schrapel - 
-        <a href="https://github.com/visrealm/VrEmuLcd">https://github.com/visrealm/VrEmuLcd</a>
+        <a href="https://github.com/visrealm/vrEmuLcd">https://github.com/visrealm/vrEmuLcd</a>
       </p>
     </div>
   </footer>
 
-  <img id="lcd1602" src="../../res/lcd1602.png" style="display:none;"></img>
+  <img id="lcd1602" src="../../res/lcd1602.png" style="display:none;" alt="lcd background"/>
   <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous">
   </script>
 
@@ -43,6 +45,7 @@
     window.addEventListener('resize', resizeCanvas, false);
     window.addEventListener('focus', resizeCanvas, false);
 
+    // resize the canvas according to the window size
     function resizeCanvas() {
       canv.width = cont.width();
       canv.height = window.innerHeight * 0.5;
@@ -51,55 +54,79 @@
     lcdLoop = null;
     lcd = null;
 
+    // when the LCD engine is loaded, call this
     vrEmuLcd.setLoadedCallback(function () {
-      lcd = vrEmuLcd.newLCD(16, 2);
-      //lcd.colorScheme = vrEmuLcd.Schemes.GreenBlack;
-      lcd.sendCommand(LCD_CMD_DISPLAY | LCD_CMD_DISPLAY_ON | LCD_CMD_DISPLAY_CURSOR_BLINK);
+
+      // create a new LCD object
+      lcd = vrEmuLcd.newLCD(16, 2, vrEmuLcd.CharacterRom.A00);
+
+      // set the color scheme
+      // lcd.colorScheme = vrEmuLcd.Schemes.GreenBlack;
+
+      // set up the display
+      lcd.sendCommand(LCD_CMD_DISPLAY | LCD_CMD_DISPLAY_ON | LCD_CMD_DISPLAY_CURSOR | LCD_CMD_DISPLAY_CURSOR_BLINK);
       lcd.sendCommand(LCD_CMD_CLEAR);
 
+      // output some text
       var msg = "Hello, World!";
       lcd.writeString(msg);
 
+      // run the display loop
       if (lcdLoop) {
         lcdLoop();
       }
     });
-
-    document.addEventListener('keydown', function (e) {
-      if (e.key == "ArrowLeft") {
-        lcd.sendCommand(LCD_CMD_SHIFT | LCD_CMD_SHIFT_LEFT | (e.shiftKey ? LCD_CMD_SHIFT_DISPLAY :
-          LCD_CMD_SHIFT_CURSOR));
-      } else if (e.key == "Backspace") {
-        lcd.sendCommand(LCD_CMD_SHIFT | LCD_CMD_SHIFT_LEFT);
-        lcd.writeByte(32);
-        lcd.sendCommand(LCD_CMD_SHIFT | LCD_CMD_SHIFT_LEFT);
-      } else if (e.key == "ArrowRight") {
-        lcd.sendCommand(LCD_CMD_SHIFT | LCD_CMD_SHIFT_RIGHT | (e.shiftKey ? LCD_CMD_SHIFT_DISPLAY :
-          LCD_CMD_SHIFT_CURSOR));
-      } else if (e.key.length == 1 && event.which > 30) {
-        lcd.writeByte(e.key.charCodeAt(0));
-      }
-    });
-
-
+   
     var lcd1602 = document.getElementById("lcd1602");
 
+    // just render the display
     lcdLoop = function () {
       if (lcd != null) {
-        var xOff = canv.width * 0.25;
-        var yOff = canv.height * 0.25;
-        var width = canv.width * 0.50;
-        var height = canv.height * 0.50;
+
+        // determine bezel image size
+        var xOff = canv.width * 0.20;
+        var yOff = canv.height * 0.20;
+        var width = canv.width * 0.60;
+        var height = canv.height * 0.60;
         var scale = Math.min(height / lcd1602.height, width / lcd1602.width);
 
+        // render the lcd screen
         lcd.render(ctx, xOff + (76 * scale), yOff + (122 * scale), 710 * scale, 158 * scale);
 
+        // render the bezel
         ctx.drawImage(lcd1602, xOff, yOff, lcd1602.width * scale, lcd1602.height * scale);
       }
       window.setTimeout(lcdLoop, 50);
     };
 
     resizeCanvas();
+
+    // handle key events
+    document.addEventListener('keydown', function (e) {
+      if (e.key == "ArrowLeft") {
+        lcd.sendCommand(LCD_CMD_SHIFT | LCD_CMD_SHIFT_LEFT | 
+                        (e.shiftKey ? LCD_CMD_SHIFT_DISPLAY : LCD_CMD_SHIFT_CURSOR));
+      } else if (e.key == "ArrowRight") {
+        lcd.sendCommand(LCD_CMD_SHIFT | LCD_CMD_SHIFT_RIGHT |
+                        (e.shiftKey ? LCD_CMD_SHIFT_DISPLAY : LCD_CMD_SHIFT_CURSOR));
+      } else if (e.key == "ArrowDown") {
+        for (var i = 0; i < 40; ++i)
+        {
+          lcd.sendCommand(LCD_CMD_SHIFT | LCD_CMD_SHIFT_RIGHT | LCD_CMD_SHIFT_CURSOR);
+        }
+      } else if (e.key == "ArrowUp") {
+        for (var i = 0; i < 40; ++i)
+        {
+          lcd.sendCommand(LCD_CMD_SHIFT | LCD_CMD_SHIFT_LEFT | LCD_CMD_SHIFT_CURSOR);
+        }
+      } else if (e.key == "Backspace") {
+        lcd.sendCommand(LCD_CMD_SHIFT | LCD_CMD_SHIFT_LEFT);
+        lcd.writeByte(32);
+        lcd.sendCommand(LCD_CMD_SHIFT | LCD_CMD_SHIFT_LEFT);
+      } else if (e.key.length == 1 && event.which > 30) {
+        lcd.writeByte(e.key.charCodeAt(0));
+      }
+    });    
   </script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous">
   </script>

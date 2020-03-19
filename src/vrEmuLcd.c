@@ -544,7 +544,11 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdUpdatePixels(VrEmuLcd* lcd)
           // override with cursor data if appropriate
           if (drawCursor)
           {
-            *pixel = (cursorOn & LCD_CMD_DISPLAY_CURSOR_BLINK) || ((cursorOn & LCD_CMD_DISPLAY_CURSOR) && y == CHAR_HEIGHT_PX - 1);
+            if ((cursorOn & LCD_CMD_DISPLAY_CURSOR_BLINK) ||
+               ((cursorOn & LCD_CMD_DISPLAY_CURSOR) && y == CHAR_HEIGHT_PX - 1))
+            {
+              *pixel = 1;
+            }
           }
 
           // next pixel
