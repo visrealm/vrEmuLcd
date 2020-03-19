@@ -5,6 +5,13 @@ This LCD Emulator can be used to emulate most standard LCD displays.
 
 The core engine is written in C and currently has a JavaScript front-end.
 
+## Screenshots:
+
+![Hello, World!](https://visrealm.github.io/vrEmuLcd/res/helloworld.png)
+
 ## Live examples:
 
 [Hello, World!](https://visrealm.github.io/vrEmuLcd/examples/helloworld)
+
+## License
+This code is licensed under the [MIT](https://opensource.org/licenses/MIT "MIT") license
