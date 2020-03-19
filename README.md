@@ -9,6 +9,8 @@ It accepts and responds to most commands listed in the [DH44780U datasheet](http
 ## Screenshots:
 
 ![Hello, World!](https://visrealm.github.io/vrEmuLcd/res/helloworld.png)
+![Different Colors!](https://visrealm.github.io/vrEmuLcd/res/helloworld2.png)
+![Different Sizes!](https://visrealm.github.io/vrEmuLcd/res/lcd2004_demo.png)
 
 ## Live examples:
 
