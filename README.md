@@ -1,5 +1,6 @@
-# vrEmuLcd
-HD44780U LCD Display Emulator. C engine and Web front-end.
+# vrEmuLcd - HD44780U LCD Display Emulator
+
+Core engine written in C with a flexible Web front-end.
 
 This LCD Emulator can be used to emulate most standard LCD displays.
 
