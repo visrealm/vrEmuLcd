@@ -11,7 +11,8 @@ The core engine is written in C and currently has a JavaScript front-end.
 
 ## Live examples:
 
-[Hello, World!](https://visrealm.github.io/vrEmuLcd/examples/helloworld)
+* [Hello, World!](https://visrealm.github.io/vrEmuLcd/examples/helloworld)
+* [Troy's Breadboard Computer!](https://cpu.visualrealmsoftware.com/emu2)
 
 ## License
 This code is licensed under the [MIT](https://opensource.org/licenses/MIT "MIT") license
