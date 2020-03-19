@@ -7,4 +7,4 @@ The core engine is written in C and currently has a JavaScript front-end.
 
 ## Live examples:
 
-Hello, World!
+[Hello, World!](https://visrealm.github.io/vrEmuLcd/examples/helloworld)
