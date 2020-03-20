@@ -68,6 +68,31 @@ It accepts and responds to most commands listed in the [DH44780 datasheet](https
 #### sendCommand(commandByte)
 `lcd.sendCommand(data);` - send a command to the instruction register of the lcd
 
+Command constants are defined:
+- `LCD_CMD_CLEAR` - clear the display
+
+- `LCD_CMD_HOME` - reset display to home position
+
+- `LCD_CMD_ENTRY_MODE` - entry mode (the following to be bitwise-OR'd)
+  - `LCD_CMD_ENTRY_MODE_INCREMENT` - automatically increment the cursor or display
+  - `LCD_CMD_ENTRY_MODE_DECREMENT` - automatically decrement the cursor or display
+  - `LCD_CMD_ENTRY_MODE_SHIFT` - automaticallt shift the entire display instead of the cursor
+
+- `LCD_CMD_DISPLAY` - display mode (the following to be bitwise-OR'd)
+  - `LCD_CMD_DISPLAY_ON` - turn the display on
+  - `LCD_CMD_DISPLAY_CURSOR` - display a cursor (bottom row)
+  - `LCD_CMD_DISPLAY_CURSOR_BLINK` - display a blink cursor (flashing entire character block)
+
+- `LCD_CMD_SHIFT` - move the cursor or scroll display (the following to be bitwise-OR'd)
+  - `LCD_CMD_SHIFT_CURSOR` - shift the cursor (default)
+  - `LCD_CMD_SHIFT_DISPLAY` - shift the display
+  - `LCD_CMD_SHIFT_LEFT` - shift the cursor or display left (default)
+  - `LCD_CMD_SHIFT_RIGHT` - shift the cursor or display right
+
+- `LCD_CMD_SET_CGRAM_ADDR` - set the CGRAM address (actual address uses lower 6 bits)
+
+- `LCD_CMD_SET_DRAM_ADDR` - set the CGRAM address (actual address uses lower 7 bits)
+
 #### writeByte(dataByte)
 `lcd.writeByte(dataByte);` - write a byte to the data register of the lcd
 
