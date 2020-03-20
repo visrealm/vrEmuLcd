@@ -1,8 +1,8 @@
-# vrEmuLcd - HD44780U LCD Display Emulator
+# vrEmuLcd - HD44780U Character LCD Emulator
 
 Core engine written in C with a flexible Web front-end.
 
-This LCD Emulator can be used to emulate most standard LCD displays.
+This Character LCD Emulator can be used to emulate most standard LCD displays.
 
 It accepts and responds to most commands listed in the [DH44780U datasheet](https://www.sparkfun.com/datasheets/LCD/HD44780.pdf)
 
