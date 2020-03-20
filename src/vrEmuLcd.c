@@ -359,7 +359,7 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdWriteByte(VrEmuLcd* lcd, byte data)
 
     for (int i = 0; i < CHAR_WIDTH_PX; ++i)
     {
-      byte bit = data & ((0x01 << CHAR_WIDTH_PX) >> i);
+      byte bit = data & ((0x01 << (CHAR_WIDTH_PX - 1)) >> i);
       if (bit)
       {
         *(startAddr + i) |= (0x80 >> row);
@@ -401,7 +401,7 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdWriteByte(VrEmuLcd* lcd, byte data)
     {
       if (*(startAddr + i) & (0x80 >> row))
       {
-        data |= ((0x01 << CHAR_WIDTH_PX) >> i);
+        data |= ((0x01 << (CHAR_WIDTH_PX - 1)) >> i);
       }
     }
   }
