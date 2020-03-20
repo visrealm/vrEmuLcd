@@ -17,8 +17,8 @@ It accepts and responds to most commands listed in the [DH44780 datasheet](https
 ### Different Sizes
 ![Different Sizes!](https://visrealm.github.io/vrEmuLcd/res/lcd2004_demo.png)
 
-### Customer characters (CGRAM support)
-![Customer characters (CGRAM support)!](https://visrealm.github.io/vrEmuLcd/res/the8bitguy.png)
+### Custom characters (CGRAM support)
+![Custom characters (CGRAM support)!](https://visrealm.github.io/vrEmuLcd/res/the8bitguy.png)
 
 ## Live examples:
 
