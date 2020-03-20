@@ -20,6 +20,7 @@ It accepts and responds to most commands listed in the [DH44780U datasheet](http
 ## Live examples:
 
 * [Hello, World!](https://visrealm.github.io/vrEmuLcd/examples/helloworld)
+* [The 8-Bit Guy: Character LCD](https://visrealm.github.io/vrEmuLcd/examples/8bitguy)
 * [Troy's Breadboard Computer!](https://cpu.visualrealmsoftware.com/emu2)
 
 ## License
