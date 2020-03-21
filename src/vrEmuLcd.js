@@ -112,6 +112,7 @@ vrEmuLcdModule = {
     var _writeString = vrEmuLcdModule.cwrap('vrEmuLcdWriteString', null, ['number','string']);
     var _getDataOffset = vrEmuLcdModule.cwrap('vrEmuLcdGetDataOffset', 'number', ['number','number','number']);
     var _readByte = vrEmuLcdModule.cwrap('vrEmuLcdReadByte', 'number', ['number']);
+    var _readAddress = vrEmuLcdModule.cwrap('vrEmuLcdReadAddress', 'number', ['number']);
     var _updatePixels = vrEmuLcdModule.cwrap('vrEmuLcdUpdatePixels', null, ['number']);
     var _numPixelsX = vrEmuLcdModule.cwrap('vrEmuLcdNumPixelsX', 'number', ['number']);
     var _numPixelsY = vrEmuLcdModule.cwrap('vrEmuLcdNumPixelsY', 'number', ['number']);
@@ -181,6 +182,16 @@ vrEmuLcdModule = {
           return _readByte(lcd);
         },
         
+        // read the current address pointer offset in cgram or ddram
+        // equivalent to:
+        //   1. setting RS to low
+        //   2. setting R/W to high (read)
+        //   3. pulsing E
+        //   4. returning D6-D0
+        readAddress: function() {
+          return _readAddress(lcd);
+        },
+
         // display size in pixels
         numPixelsX: _numPixelsX(lcd),
         numPixelsY: _numPixelsY(lcd),

@@ -105,6 +105,9 @@ Command constants are defined:
 #### readByte()
 `lcd.readByte();` - read the current byte from cgram or ddram (determined by current address) 
 
+#### readAddress()
+`lcd.readAddress();` - read the current address offset in cgram or ddram
+
 #### pixelState(pixelX, pixelY)
 `lcd.pixelState(pixelX, pixelY);` - return the pixel state at the given location
 - `-1` - no pixel (eg. margin)

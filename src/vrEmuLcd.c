@@ -44,7 +44,11 @@ VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_SET_DRAM_ADDR        = 0b10000000;
 static const int CHAR_WIDTH_PX       =  5;
 static const int CHAR_HEIGHT_PX      =  8;
 
-static const int DATA_WIDTH_CHARS    = 40;
+static const int DATA_WIDTH_CHARS_1ROW = 80;
+static const int DATA_WIDTH_CHARS_2ROW = 40;
+static const int DATA_WIDTH_CHARS_4ROW = 20;
+static const int DDRAM_SIZE            = 128;
+static const int DDRAM_VISIBLE_SIZE    = 80;
 
 static const int DISPLAY_MIN_COLS    =  8;
 static const int DISPLAY_MAX_COLS    = 40;
@@ -86,6 +90,7 @@ struct vrEmuLcd_s
   // ddRam storage
   byte* ddRam;
   byte* ddPtr;
+  int dataWidthCols;
 
   // cgRam storage
   byte cgRam[CGRAM_STORAGE_CHARS][CHAR_HEIGHT_PX];
@@ -113,8 +118,17 @@ struct vrEmuLcd_s
 static void increment(VrEmuLcd* lcd)
 {
   ++lcd->ddPtr;
-  size_t offset = lcd->ddPtr - lcd->ddRam;
-  if (offset >= (DATA_WIDTH_CHARS)* lcd->rows)
+
+  // find pointer offset from start
+  int offset = lcd->ddPtr - lcd->ddRam;
+
+  // 4 row mode's funky addressing scheme
+  if (lcd->rows > 2)
+  {
+    if (offset == 0x28) lcd->ddPtr = lcd->ddRam + 0x40;
+    else if (offset == 0x68 || offset >= DDRAM_SIZE) lcd->ddPtr = lcd->ddRam;
+  }
+  else if (offset >= DDRAM_VISIBLE_SIZE)
   {
     lcd->ddPtr = lcd->ddRam;
   }
@@ -131,9 +145,24 @@ static void increment(VrEmuLcd* lcd)
 static void decrement(VrEmuLcd* lcd)
 {
   --lcd->ddPtr;
-  if (lcd->ddPtr < lcd->ddRam)
+
+  // find pointer offset from start
+  int offset = lcd->ddPtr - lcd->ddRam;
+
+  // 4 row mode's funky addressing scheme
+  if (lcd->rows > 2)
   {
-    lcd->ddPtr = lcd->ddRam + (DATA_WIDTH_CHARS * lcd->rows) - 1;
+    if (offset == -1) lcd->ddPtr = lcd->ddRam + 0x67;
+    else if (offset == 0x39) lcd->ddPtr = lcd->ddRam  + 0x27;
+  }
+  
+  if (offset == -1)
+  {
+    lcd->ddPtr += DDRAM_VISIBLE_SIZE;
+  }
+  else if (offset >= DDRAM_SIZE)
+  {
+    lcd->ddPtr = lcd->ddRam;
   }
 }
 
@@ -208,6 +237,7 @@ VR_LCD_EMU_DLLEXPORT VrEmuLcd* vrEmuLcdNew(int cols, int rows, vrEmuLcdCharacter
 
   if (rows < DISPLAY_MIN_ROWS) rows = DISPLAY_MIN_ROWS;
   else if (rows > DISPLAY_MAX_ROWS) rows = DISPLAY_MAX_ROWS;
+  if (rows == 3) rows = 2;
 
   // build lcd data structure
   VrEmuLcd* lcd = (VrEmuLcd*)malloc(sizeof(VrEmuLcd));
@@ -217,8 +247,7 @@ VR_LCD_EMU_DLLEXPORT VrEmuLcd* vrEmuLcdNew(int cols, int rows, vrEmuLcdCharacter
     lcd->rows = rows;
     lcd->characterRom = rom;
 
-    int datalen = DATA_WIDTH_CHARS * rows;
-    lcd->ddRam = (byte*)malloc(datalen);
+    lcd->ddRam = (byte*)malloc(DDRAM_SIZE);
     lcd->ddPtr = lcd->ddRam;
     lcd->entryModeFlags = LCD_CMD_ENTRY_MODE_INCREMENT;
     lcd->displayFlags = 0x00;
@@ -229,10 +258,25 @@ VR_LCD_EMU_DLLEXPORT VrEmuLcd* vrEmuLcdNew(int cols, int rows, vrEmuLcdCharacter
     lcd->numPixels = lcd->pixelsWidth * lcd->pixelsHeight;
     lcd->pixels = (char*)malloc(lcd->numPixels);
 
+    switch (lcd->rows)
+    {
+      case 1:
+        lcd->dataWidthCols = DATA_WIDTH_CHARS_1ROW;
+        break;
+
+      case 2:
+        lcd->dataWidthCols = DATA_WIDTH_CHARS_2ROW;
+        break;
+
+      case 4:
+        lcd->dataWidthCols = DATA_WIDTH_CHARS_4ROW;
+        break;
+    }
+
 	  // fill arrays with default data
 	  if (lcd->ddRam != NULL)
 	  {
-		  memset(lcd->ddRam, ' ', datalen);
+		  memset(lcd->ddRam, ' ', DDRAM_SIZE);
 	  }
 
     memset(lcd->cgRam, DEFAULT_CGRAM_BYTE, sizeof(lcd->cgRam));
@@ -274,14 +318,6 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdSendCommand(VrEmuLcd* lcd, byte command)
   {
     // ddram address in remaining 7 bits
     int offset = (command & 0x7f);
-    if (offset < 0)
-    {
-      offset = 0;
-    }
-    else if (offset >= DATA_WIDTH_CHARS * lcd->rows)
-    {
-      offset = DATA_WIDTH_CHARS * lcd->rows - 1;
-    }
     lcd->ddPtr = lcd->ddRam + offset;
     lcd->cgPtr = NULL;
   }
@@ -332,8 +368,7 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdSendCommand(VrEmuLcd* lcd, byte command)
   {
     if (lcd->ddRam != NULL)
     {
-      size_t datalen = ((size_t)DATA_WIDTH_CHARS) * lcd->rows;
-      memset(lcd->ddRam, ' ', datalen);
+      memset(lcd->ddRam, ' ', DDRAM_SIZE);
     }
     lcd->ddPtr = lcd->ddRam;
     lcd->scrollOffset = 0;
@@ -415,6 +450,23 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdWriteByte(VrEmuLcd* lcd, byte data)
   return data;
 }
 
+
+/* Function:  vrEmuLcdReadAddress
+ * --------------------
+ * read the current address offset (RS is high, R/W is high)
+ *
+ * returns: the current address
+ */
+VR_LCD_EMU_DLLEXPORT byte vrEmuLcdReadAddress(VrEmuLcd* lcd)
+{
+  if (lcd->cgPtr)
+  {
+    return (lcd->cgPtr - (byte*)lcd->cgRam) & 0x3f;
+  }
+ 
+  return (lcd->ddPtr - lcd->ddRam) & 0x7f;
+}
+
 /*
  * Function:  vrEmuLcdWriteString
  * ----------------------------------------
@@ -475,12 +527,23 @@ VR_LCD_EMU_DLLEXPORT const byte* vrEmuLcdCharBits(VrEmuLcd* lcd, byte c)
  */
 VR_LCD_EMU_DLLEXPORT int vrEmuLcdGetDataOffset(VrEmuLcd* lcd, int row, int col)
 {
-  int offset = col % DATA_WIDTH_CHARS;
-  if (col < 0)
+  // adjust for display scroll offset
+  if (row >= lcd->rows) row = lcd->rows - 1;
+
+  while (lcd->scrollOffset < 0)
   {
-    offset = DATA_WIDTH_CHARS + offset;
+    lcd->scrollOffset += lcd->dataWidthCols;
   }
-  return (row * DATA_WIDTH_CHARS) + offset;
+
+  int dataCol = (col + lcd->scrollOffset) % lcd->dataWidthCols;
+  int rowOffset = row * lcd->dataWidthCols;
+
+  if (lcd->rows > 2)
+  {
+    rowOffset = rowOffsets[row];
+  }
+
+  return rowOffset + dataCol;
 }
 
 /*
@@ -512,11 +575,8 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdUpdatePixels(VrEmuLcd* lcd)
       // find top-left pixel for the current display character position
       char* charTopLeft = lcd->pixels + (row * (CHAR_HEIGHT_PX + 1) * lcd->pixelsWidth) + col * (CHAR_WIDTH_PX + 1);
 
-      // adjust for display scroll offset
-      int dataCol = col + lcd->scrollOffset;
-
       // find current character in ddram
-      byte* ddPtr = lcd->ddRam + vrEmuLcdGetDataOffset(lcd, row, dataCol);
+      byte* ddPtr = lcd->ddRam + vrEmuLcdGetDataOffset(lcd, row, col);
 
       // only draw cursor if the data pointer is pointing at this character
       int drawCursor = cursorOn && (ddPtr == lcd->ddPtr);
