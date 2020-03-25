@@ -8,22 +8,22 @@ It accepts and responds to most commands listed in the [HD44780 datasheet](https
 
 ## Screenshots:
 
-### Hello, World!
-![Hello, World!](https://visrealm.github.io/vrEmuLcd/res/vrEmuLcd.gif)
+#### Hello, World!
+<img src="res/vrEmuLcd.gif" alt="Hello, World!" width="400px">
 
-### Different Colors
-![Different Colors!](https://visrealm.github.io/vrEmuLcd/res/helloworld2.png)
+#### Different Colors
+<img src="res/helloworld2.png" alt="Different Colors!" width="400px">
 
-### Different Sizes
-![Different Sizes!](https://visrealm.github.io/vrEmuLcd/res/lcd2004_demo.png)
+#### Different Sizes
+<img src="res/lcd2004_demo.png" alt="Different Sizes!" width="400px">
 
-### Custom characters (CGRAM support)
-![Custom characters (CGRAM support)!](https://visrealm.github.io/vrEmuLcd/res/the8bitguy.png)
+#### Custom characters (CGRAM support)
+<img src="res/the8bitguy.png" alt="Custom characters (CGRAM support)!" width="400px">
 
 ## Live examples:
 
-* [Hello, World!](https://visrealm.github.io/vrEmuLcd/examples/helloworld)
-* [The 8-Bit Guy: Character LCD](https://visrealm.github.io/vrEmuLcd/examples/8bitguy)
+* [Hello, World!](examples/helloworld)
+* [The 8-Bit Guy: Character LCD](examples/8bitguy)
 * [Troy's Breadboard Computer!](https://cpu.visualrealmsoftware.com/emu2)
 
 ## Usage
