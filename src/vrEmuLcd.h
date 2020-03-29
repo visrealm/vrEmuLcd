@@ -21,6 +21,7 @@
   #define VR_LCD_EMU_DLLEXPORT __declspec(dllimport)
 #endif
 
+#undef byte
 typedef unsigned char byte;
 
 /* PRIVATE DATA STRUCTURE

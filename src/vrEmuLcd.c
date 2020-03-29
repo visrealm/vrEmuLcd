@@ -41,31 +41,31 @@ VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_SET_DRAM_ADDR        = 0b10000000;
 
 /* PRIVATE CONSTANTS
  * ---------------------------------------- */
-static const int CHAR_WIDTH_PX       =  5;
-static const int CHAR_HEIGHT_PX      =  8;
+#define CHAR_WIDTH_PX         5
+#define CHAR_HEIGHT_PX        8
 
-static const int DATA_WIDTH_CHARS    = 40;
+#define DATA_WIDTH_CHARS     40
 
-static const int DISPLAY_MIN_COLS    =  8;
-static const int DISPLAY_MAX_COLS    = 40;
-static const int DISPLAY_MIN_ROWS    =  1;
-static const int DISPLAY_MAX_ROWS    =  4;
+#define DISPLAY_MIN_COLS      8
+#define DISPLAY_MAX_COLS     40
+#define DISPLAY_MIN_ROWS      1
+#define DISPLAY_MAX_ROWS      4
 
-static const int CGRAM_STORAGE_CHARS = 16;
-static const int ROM_FONT_CHARS      = 256 - CGRAM_STORAGE_CHARS;
+#define CGRAM_STORAGE_CHARS  16
+#define ROM_FONT_CHARS       (256 - CGRAM_STORAGE_CHARS)
 
-static const double CLOCK_TO_MS = 1.0 / (CLOCKS_PER_SEC / 1000.0);
+#define CLOCK_TO_MS  (91.0 / (CLOCKS_PER_SEC / 1000.0))
 
-static const byte CURSOR_MASK = (LCD_CMD_DISPLAY_CURSOR_BLINK | LCD_CMD_DISPLAY_CURSOR);
-static const int CURSOR_BLINK_PERIOD_MS = 350;
-static const int CURSOR_BLINK_CYCLE_MS = 2 * CURSOR_BLINK_PERIOD_MS;
+#define CURSOR_MASK  (LCD_CMD_DISPLAY_CURSOR_BLINK | LCD_CMD_DISPLAY_CURSOR)
+#define CURSOR_BLINK_PERIOD_MS  350
+#define CURSOR_BLINK_CYCLE_MS  (2 * CURSOR_BLINK_PERIOD_MS)
 
 
 /* font roms */
 static const byte fontA00[ROM_FONT_CHARS][CHAR_WIDTH_PX];
 static const byte fontA02[ROM_FONT_CHARS][CHAR_WIDTH_PX];
 
-static const byte DEFAULT_CGRAM_BYTE = 0xaa;
+#define DEFAULT_CGRAM_BYTE  0xaa
 
 static int rowOffsets[] = { 0x00, 0x40, 0x14, 0x54 };
 
