@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>vrEmuLcd Example - The 8-Bit Guy: Character LCD</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+</head>
+
+<body>
+  <div id="cont" class="container">
+    <div id="head" class="page-header">
+      <h1>The 8-Bit Guy: Character LCD - vrEmuLcd Examples</h1>
+    </div>
+    <p>Virtual re-creation of the character LCD project box created by The 8-Bit Guy (aka David Murray) in the first part
+      of his "How a Character LCD works" video series.</p>
+    <p>If you haven't seen it, check it out here: <a href="https://www.youtube.com/watch?v=hZRL8luuPb8">The 8-Bit Guy:
+        How a Character LCD works Part 1</a></p>
+    <canvas id="canv"></canvas>
+    <p id="currentVal" class="lead" style="text-align:center;"></p>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="text-muted">Copyright (c) 2020 Troy Schrapel -
+        <a href="https://github.com/visrealm/vrEmuLcd">https://github.com/visrealm/vrEmuLcd</a>
+      </p>
+    </div>
+  </footer>
+
+  <img id="lcd_box" src="lcd_box.png" style="display:none;" alt="lcd background" />
+  <img id="switch_up" src="switch_up.png" style="display:none;" alt="switch up" />
+  <img id="switch_dn" src="switch_dn.png" style="display:none;" alt="switch dn" />
+  <img id="button_dn" src="button_dn.png" style="display:none;" alt="button dn" />
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+    integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous">
+  </script>
+
+  <script src="../../src/vrEmuLcd.js"></script>
+  <script src="../../bin/vrEmuLcdWasm.js"></script>
+
+  <script>
+    var cont = $(document.getElementById('cont'));
+    var canv = document.getElementById('canv');
+    var ctx = canv.getContext('2d');
+
+    window.addEventListener('resize', resizeCanvas, false);
+    window.addEventListener('focus', resizeCanvas, false);
+
+    // resize the canvas according to the window size
+    function resizeCanvas() {
+      canv.width = cont.width();
+      canv.height = canv.width * 0.5;
+    }
+
+    var getMousePos = function (evt) {
+      var rect = canv.getBoundingClientRect();
+      return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+      };
+    }
+
+    var getMouseDist = function (evt, target) {
+      var pos = getMousePos(evt);
+      var dx = Math.abs(pos.x - target.x);
+      var dy = Math.abs(pos.y - target.y);
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    lcdLoop = null;
+    lcd = null;
+
+    // when the LCD engine is loaded, call this
+    vrEmuLcd.setLoadedCallback(function () {
+
+      // create a new LCD object
+      lcd = vrEmuLcd.newLCD(20, 4, vrEmuLcd.CharacterRom.A02);
+
+      // set the color scheme
+      lcd.colorScheme = vrEmuLcd.Schemes.BlackOnGreen;
+
+      // set up the display
+      lcd.sendCommand(LCD_CMD_DISPLAY | LCD_CMD_DISPLAY_ON | LCD_CMD_DISPLAY_CURSOR | LCD_CMD_DISPLAY_CURSOR_BLINK);
+      lcd.sendCommand(LCD_CMD_CLEAR);
+
+      // output some text
+      var msg = "The 8-Bit Guy!";
+      lcd.writeString(msg);
+
+      // run the display loop
+      if (lcdLoop) {
+        lcdLoop();
+      }
+    });
+
+    var imgLcdBox = document.getElementById("lcd_box");
+    var imgSwitchUp = document.getElementById("switch_up");
+    var imgSwitchDn = document.getElementById("switch_dn");
+    var imgButtonDn = document.getElementById("button_dn");
+
+    var dataSwitches = [{
+        x: 751,
+        y: 609,
+        s: false
+      },
+      {
+        x: 661,
+        y: 610,
+        s: false
+      },
+      {
+        x: 573,
+        y: 611,
+        s: false
+      },
+      {
+        x: 483,
+        y: 610,
+        s: false
+      },
+      {
+        x: 395,
+        y: 611,
+        s: false
+      },
+      {
+        x: 307,
+        y: 608,
+        s: false
+      },
+      {
+        x: 218,
+        y: 611,
+        s: false
+      },
+      {
+        x: 131,
+        y: 613,
+        s: false
+      },
+    ];
+
+    var modeSwitch = {
+      x: 972,
+      y: 188,
+      s: false
+    };
+    var commitButton = {
+      x: 972,
+      y: 611,
+      s: false
+    };
+    var xOff = 0;
+    var yOff = 0;
+    var scale = 1.0;
+
+    var getDataValue = function() {
+      var data = 0;
+      for (var i = 0; i < dataSwitches.length; ++i) {
+        data |= (dataSwitches[i].s ? 1 : 0) << i;
+      }
+      return data;
+    }
+
+    var doCommit = function() {
+
+      if (modeSwitch.s) // instruction mode
+      {
+        lcd.sendCommand(getDataValue());
+      }
+      else // data mode
+      {
+        lcd.writeByte(getDataValue());
+      }
+    }
+
+    // just render the display
+    lcdLoop = function () {
+      if (lcd != null) {
+
+        // determine bezel image size
+        xOff = canv.width * 0.20;
+        yOff = canv.height * 0.05;
+        var width = canv.width * 0.80;
+        var height = canv.height * 0.90;
+        scale = Math.min(height / imgLcdBox.height, width / imgLcdBox.width);
+
+        // render the lcd screen
+        lcd.render(ctx, xOff + (351 * scale), yOff + (195 * scale), 522 * scale, 173 * scale);
+
+        // render the bezel
+        ctx.drawImage(imgLcdBox, xOff, yOff, imgLcdBox.width * scale, imgLcdBox.height * scale);
+
+        for (var i = 0; i < dataSwitches.length; ++i) {
+          var swImg = dataSwitches[i].s ? imgSwitchUp : imgSwitchDn;
+
+          ctx.drawImage(swImg, xOff + dataSwitches[i].x * scale, yOff + dataSwitches[i].y * scale,
+            swImg.width * scale, swImg.height * scale);
+        }
+
+        var modeImg = modeSwitch.s ? imgSwitchUp : imgSwitchDn;
+        ctx.drawImage(modeImg, xOff + modeSwitch.x * scale, yOff + modeSwitch.y * scale,
+          modeImg.width * scale, modeImg.height * scale);
+
+        if (commitButton.s) {
+
+          ctx.drawImage(imgButtonDn, xOff + commitButton.x * scale, yOff + commitButton.y * scale,
+            imgButtonDn.width * scale, imgButtonDn.height * scale);
+        }
+      }
+      window.setTimeout(lcdLoop, 50);
+    };
+
+    resizeCanvas();
+
+    setCurrentValue = function()
+    {
+      var value = getDataValue();
+
+      var helpText = "Current value:" + 
+        " h:[ " + value.toString(16).padStart(2, '0') + " ]" +
+        " b:[ " + value.toString(2).padStart(8, '0') + " ]" +
+        " d:[ " + value.toString() + " ]";
+
+      if (value >= 32 && value <= 127)
+      {
+        helpText += " a:[ " + String.fromCharCode(value) + " ]";
+      }
+
+      $("#currentVal").text(helpText);
+       
+    }
+
+    buttonHit = function (evt, button) {
+      return getMouseDist(evt, {
+        x: xOff + (button.x + 45) * scale,
+        y: yOff + (button.y + 45) * scale
+      }) < 45 * scale;
+    }
+
+    canv.addEventListener('click', function (evt) {
+      if (buttonHit(evt, modeSwitch)) {
+        modeSwitch.s = !modeSwitch.s;
+      }
+      else
+      {
+        for (var i = 0; i < dataSwitches.length; ++i) {
+          if (buttonHit(evt, dataSwitches[i])) {
+            dataSwitches[i].s = !dataSwitches[i].s;
+          }
+        }
+
+        setCurrentValue();
+      }
+    }, false);
+
+    var setCursor = function (evt) {
+      canv.title = "";
+      canv.style.cursor = "default";
+
+      if (buttonHit(evt, commitButton)) {
+        canv.style.cursor = "grab";
+        canv.title = "Commit " + (modeSwitch.s ? "instruction" : "data");
+      } else if (buttonHit(evt, modeSwitch)) {
+        canv.style.cursor = "grab";
+        canv.title = "Switch to " + (modeSwitch.s ? "data" : "instruction") + " mode";
+      } else {
+        for (var i = 0; i < dataSwitches.length; ++i) {
+          if (buttonHit(evt, dataSwitches[i])) {
+            canv.style.cursor = "grab";
+            canv.title = "Toggle data bit " + i + " " + (dataSwitches[i].s ? "off" : "on");
+          }
+        }
+      }
+    }
+
+    canv.addEventListener('mousemove', function (evt) {
+      if (!buttonHit(evt, commitButton)) {
+        commitButton.s = false;
+      }
+
+      setCursor(evt);
+
+    }, false);
+
+
+    canv.addEventListener('mousedown', function (evt) {
+      if (buttonHit(evt, commitButton)) {
+        commitButton.s = true;
+        doCommit();
+      }
+
+      if (canv.style.cursor == "grab") {
+        canv.style.cursor = "grabbing";
+      }
+    }, false);
+
+    canv.addEventListener('mouseup', function (evt) {
+      commitButton.s = false;
+
+      setCursor(evt);
+    }, false);
+
+    // handle key events
+    document.addEventListener('keydown', function (e) {
+      if (e.key == "ArrowLeft") {
+        lcd.sendCommand(LCD_CMD_SHIFT | LCD_CMD_SHIFT_LEFT |
+          (e.shiftKey ? LCD_CMD_SHIFT_DISPLAY : LCD_CMD_SHIFT_CURSOR));
+      } else if (e.key == "ArrowRight") {
+        lcd.sendCommand(LCD_CMD_SHIFT | LCD_CMD_SHIFT_RIGHT |
+          (e.shiftKey ? LCD_CMD_SHIFT_DISPLAY : LCD_CMD_SHIFT_CURSOR));
+      } else if (e.key == "ArrowDown") {
+        for (var i = 0; i < 40; ++i) {
+          lcd.sendCommand(LCD_CMD_SHIFT | LCD_CMD_SHIFT_RIGHT | LCD_CMD_SHIFT_CURSOR);
+        }
+      } else if (e.key == "ArrowUp") {
+        for (var i = 0; i < 40; ++i) {
+          lcd.sendCommand(LCD_CMD_SHIFT | LCD_CMD_SHIFT_LEFT | LCD_CMD_SHIFT_CURSOR);
+        }
+      } else if (e.key == "Backspace") {
+        lcd.sendCommand(LCD_CMD_SHIFT | LCD_CMD_SHIFT_LEFT);
+        lcd.writeByte(32);
+        lcd.sendCommand(LCD_CMD_SHIFT | LCD_CMD_SHIFT_LEFT);
+      } else if (e.key.length == 1 && event.which > 30) {
+        lcd.writeByte(e.key.charCodeAt(0));
+      }
+    });
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+    integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous">
+  </script>
+</body>
+
+</html>

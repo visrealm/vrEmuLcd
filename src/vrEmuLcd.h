@@ -84,7 +84,7 @@ void vrEmuLcdDestroy(VrEmuLcd* lcd);
 
 /* Function:  vrEmuLcdSendCommand
  * --------------------
- * send a command to the lcd (RS is low)
+ * send a command to the lcd (RS is low, R/W is low)
  *
  * byte: the data (DB0 -> DB7) to send
  */
@@ -94,7 +94,7 @@ void vrEmuLcdSendCommand(VrEmuLcd* lcd, byte data);
 
 /* Function:  vrEmuLcdWriteByte
  * --------------------
- * write a byte to the lcd (RS is high)
+ * write a byte to the lcd (RS is high, R/W is low)
  *
  * byte: the data (DB0 -> DB7) to send
  */
@@ -115,7 +115,7 @@ void vrEmuLcdWriteString(VrEmuLcd* lcd, const char *str);
 /* Function:  vrEmuLcdGetDataOffset
  * ----------------------------------------
  * return the character offset in ddram for a given
- * row and column.
+ * row and column on the display.
  *
  * can be used to set the current cursor address
  */
@@ -124,12 +124,22 @@ int vrEmuLcdGetDataOffset(VrEmuLcd* lcd, int row, int col);
 
 /* Function:  vrEmuLcdReadByte
  * --------------------
- * read a byte from the lcd (RS is high)
+ * read a byte from the lcd (RS is high, R/W is high)
  *
  * returns: the data (DB0 -> DB7) at the current address
  */
 VR_LCD_EMU_DLLEXPORT
 byte vrEmuLcdReadByte(VrEmuLcd* lcd);
+
+/* Function:  vrEmuLcdReadAddress
+ * --------------------
+ * read the current address offset (RS is high, R/W is high)
+ *
+ * returns: the current address offset (either CGRAM or DDRAM)
+ */
+VR_LCD_EMU_DLLEXPORT
+byte vrEmuLcdReadAddress(VrEmuLcd* lcd);
+
 
 /* Function:  vrEmuLcdCharBits
  * ----------------------------------------

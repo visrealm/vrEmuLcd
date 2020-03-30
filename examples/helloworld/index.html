@@ -61,7 +61,7 @@
       lcd = vrEmuLcd.newLCD(16, 2, vrEmuLcd.CharacterRom.A00);
 
       // set the color scheme
-      // lcd.colorScheme = vrEmuLcd.Schemes.GreenBlack;
+      lcd.colorScheme = vrEmuLcd.Schemes.WhiteOnBlue;
 
       // set up the display
       lcd.sendCommand(LCD_CMD_DISPLAY | LCD_CMD_DISPLAY_ON | LCD_CMD_DISPLAY_CURSOR | LCD_CMD_DISPLAY_CURSOR_BLINK);
