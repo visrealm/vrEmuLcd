@@ -36,6 +36,10 @@ VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_SHIFT_DISPLAY        = 0b00001000;
 VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_SHIFT_LEFT           = 0b00000000;
 VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_SHIFT_RIGHT          = 0b00000100;
 
+VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_FUNCTION             = 0b00100000;
+VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_FUNCTION_LCD_1LINE   = 0b00000000;
+VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_FUNCTION_LCD_2LINE   = 0b00001000;
+
 VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_SET_CGRAM_ADDR       = 0b01000000;
 VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_SET_DRAM_ADDR        = 0b10000000;
 
@@ -325,6 +329,10 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdSendCommand(VrEmuLcd* lcd, byte command)
   {
     // cgram address in remaining 6 bits
     lcd->cgPtr = (byte*)lcd->cgRam + (command & 0x3f);
+  }
+  else if (command & LCD_CMD_FUNCTION)
+  {
+    // ignore
   }
   else if (command & LCD_CMD_SHIFT)
   {
