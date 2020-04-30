@@ -24,7 +24,7 @@ It accepts and responds to most commands listed in the [HD44780 datasheet](https
 
 * [Hello, World!](https://visrealm.github.io/vrEmuLcd/examples/helloworld)
 * [The 8-Bit Guy: Character LCD](https://visrealm.github.io/vrEmuLcd/examples/8bitguy)
-* [Troy's Breadboard Computer!](https://cpu.visualrealmsoftware.com/emu2)
+* [Troy's Breadboard Computer!](https://cpu.visualrealmsoftware.com/emu)
 
 ## Usage
 
