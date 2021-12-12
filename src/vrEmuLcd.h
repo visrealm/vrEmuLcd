@@ -18,7 +18,8 @@
 #elif COMPILING_DLL
   #define VR_LCD_EMU_DLLEXPORT __declspec(dllexport)
 #else
-  #define VR_LCD_EMU_DLLEXPORT __declspec(dllimport)
+  #define VR_LCD_EMU_DLLEXPORT 
+  //__declspec(dllimport)
 #endif
 
 #undef byte
@@ -137,7 +138,7 @@ byte vrEmuLcdReadByte(VrEmuLcd* lcd);
 
 /* Function:  vrEmuLcdReadAddress
  * --------------------
- * read the current address offset (RS is high, R/W is high)
+ * read the current address offset (RS is low, R/W is high)
  *
  * returns: the current address offset (either CGRAM or DDRAM)
  */
