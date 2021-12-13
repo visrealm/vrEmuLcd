@@ -61,6 +61,7 @@ VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_SET_DRAM_ADDR        = 0b10000000;
 #define DATA_WIDTH_CHARS_1ROW 80
 #define DATA_WIDTH_CHARS_2ROW 40
 #define DATA_WIDTH_CHARS_4ROW 20
+#define DATA_WIDTH_CHARS_GFX  16
 #define DDRAM_SIZE            128
 #define DDRAM_VISIBLE_SIZE    80
 
@@ -90,7 +91,8 @@ static const byte fontGfx[ROM_FONT_CHARS][GFX_CHAR_HEIGHT_PX];
 
 #define DEFAULT_CGRAM_BYTE  0xaa
 
-static int rowOffsets[] = { 0x00, 0x40, 0x14, 0x54 };
+static int rowOffsets[]    = { 0x00, 0x40, 0x14, 0x54 };
+static int rowOffsetsGfx[] = { 0x00, 0x10, 0x08, 0x18 };
 
 
 /* PRIVATE DATA STRUCTURE
@@ -146,10 +148,14 @@ static void increment(VrEmuLcd* lcd)
   ++lcd->ddPtr;
 
   // find pointer offset from start
-  int offset = lcd->ddPtr - lcd->ddRam;
+  ptrdiff_t offset = lcd->ddPtr - lcd->ddRam;
 
+  if (lcd->gdPtr)// && !lcd->graphicsMode)
+  {
+    if (offset >= 0x40) lcd->ddPtr = lcd->ddRam;
+  }
   // 4 row mode's funky addressing scheme
-  if (lcd->rows > 2)
+  else if (lcd->rows > 2)
   {
     if (offset == 0x28) lcd->ddPtr = lcd->ddRam + 0x40;
     else if (offset == 0x68 || offset >= DDRAM_SIZE) lcd->ddPtr = lcd->ddRam;
@@ -173,10 +179,14 @@ static void decrement(VrEmuLcd* lcd)
   --lcd->ddPtr;
 
   // find pointer offset from start
-  int offset = lcd->ddPtr - lcd->ddRam;
+  ptrdiff_t offset = lcd->ddPtr - lcd->ddRam;
 
+  if (lcd->gdPtr)// && !lcd->graphicsMode)
+  {
+    if (offset == -1) lcd->ddPtr = lcd->ddRam + 0x3f;
+  }
   // 4 row mode's funky addressing scheme
-  if (lcd->rows > 2)
+  else if (lcd->rows > 2)
   {
     if (offset == -1) lcd->ddPtr = lcd->ddRam + 0x67;
     else if (offset == 0x39) lcd->ddPtr = lcd->ddRam  + 0x27;
@@ -331,6 +341,11 @@ VR_LCD_EMU_DLLEXPORT VrEmuLcd* vrEmuLcdNew(int cols, int rows, vrEmuLcdCharacter
         break;
     }
 
+    if (graphicsLCD)
+    {
+      lcd->dataWidthCols = DATA_WIDTH_CHARS_GFX;
+    }
+
 	  // fill arrays with default data
     if (lcd->ddRam != NULL)
     {
@@ -341,7 +356,10 @@ VR_LCD_EMU_DLLEXPORT VrEmuLcd* vrEmuLcdNew(int cols, int rows, vrEmuLcdCharacter
       memset(lcd->gdRam, 0, GDRAM_SIZE);
     }
 
-    memset(lcd->cgRam, DEFAULT_CGRAM_BYTE, sizeof(lcd->cgRam));
+    if (lcd->cgRam != NULL)
+    {
+      memset(lcd->cgRam, DEFAULT_CGRAM_BYTE, sizeof(lcd->cgRam));
+    }
 
     if (lcd->pixels != NULL)
     {
@@ -389,7 +407,7 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdSendCommand(VrEmuLcd* lcd, byte command)
     {
       if (lcd->graphicsVAddr == 0xff)
       {
-        lcd->graphicsVAddr = offset;// & 0x1f;
+        lcd->graphicsVAddr = offset & 0x1f;
       }
       else
       {
@@ -398,11 +416,15 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdSendCommand(VrEmuLcd* lcd, byte command)
         lcd->graphicsVAddr = 0xff;
       }
     }
+    else if (lcd->gdPtr)
+    {
+      lcd->ddPtr = lcd->ddRam + (offset & 0x3f) * 2;
+    }
     else
     {
       lcd->ddPtr = lcd->ddRam + offset;
-      lcd->cgPtr = NULL;
     }
+    lcd->cgPtr = NULL;
   }
   else if (command & LCD_CMD_SET_CGRAM_ADDR)
   {
@@ -541,7 +563,7 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdWriteByte(VrEmuLcd* lcd, byte data)
   }
   else
   {
-    data = *(lcd->ddPtr - 1);
+    data = *(lcd->ddPtr);
   }
 
   doShift(lcd);
@@ -558,14 +580,15 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdWriteByte(VrEmuLcd* lcd, byte data)
  */
 VR_LCD_EMU_DLLEXPORT byte vrEmuLcdReadAddress(VrEmuLcd* lcd)
 {
-  int j = 0;
-
   if (lcd->cgPtr)
   {
     return (lcd->cgPtr - (byte*)lcd->cgRam) & 0x3f;
   }
+
+  byte addr = (lcd->ddPtr - lcd->ddRam) & 0x7f;
+  if (lcd->gdPtr) addr >>= 1;
  
-  return ((lcd->ddPtr - lcd->ddRam) & 0x7f);
+  return addr;
 }
 
 /*
@@ -649,7 +672,14 @@ VR_LCD_EMU_DLLEXPORT int vrEmuLcdGetDataOffset(VrEmuLcd* lcd, int row, int col)
 
   if (lcd->rows > 2)
   {
-    rowOffset = rowOffsets[row];
+    if (lcd->gdPtr)
+    {
+      rowOffset = rowOffsetsGfx[row] * 2;
+    }
+    else
+    {
+      rowOffset = rowOffsets[row];
+    }
   }
 
   return rowOffset + dataCol;
