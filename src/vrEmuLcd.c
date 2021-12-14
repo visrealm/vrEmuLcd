@@ -757,7 +757,7 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdUpdatePixels(VrEmuLcd* lcd)
               // is the display on?
               if (!displayOn)
               {
-                *pixel = 0;
+                *pixel = -1;
                 continue;
               }
 
@@ -824,7 +824,7 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdUpdatePixels(VrEmuLcd* lcd)
             // is the display on?
             if (!displayOn)
             {
-              *pixel = 0;
+              *pixel = -1;
               continue;
             }
 
