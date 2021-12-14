@@ -6,6 +6,8 @@ This Character LCD Emulator can be used to emulate most standard LCD displays.
 
 It accepts and responds to most commands listed in the [HD44780 datasheet](https://www.sparkfun.com/datasheets/LCD/HD44780.pdf)
 
+It also now support most commands for a 128x64 graphics LCD [12864B datasheet](https://www.exploreembedded.com/wiki/images/7/77/QC12864B.pdf)
+
 ## Screenshots:
 
 #### Hello, World!
@@ -16,6 +18,9 @@ It accepts and responds to most commands listed in the [HD44780 datasheet](https
 
 #### Different Sizes
 <img src="res/lcd2004_demo.png" alt="Different Sizes!" width="400px">
+
+#### 128 x 64 Graphics LCD
+<img src="https://visrealm.github.io/hbc-56/img/glcd_basic.gif" alt="HBC-56 Emulator LCD Window" width="400px">
 
 #### Custom characters (CGRAM support)
 <img src="res/the8bitguy.png" alt="Custom characters (CGRAM support)!" width="400px">
