@@ -11,6 +11,7 @@
 
 #include "vrEmuLcd.h"
 #include <stdlib.h>
+#include <stddef.h>
 #include <memory.h>
 #include <math.h>
 #include <time.h>
@@ -128,7 +129,7 @@ struct vrEmuLcd_s
   byte* gdPtr;
 
   // display pixels
-  char* pixels;
+  byte* pixels;
   int pixelsWidth;
   int pixelsHeight;
   int numPixels;
@@ -324,7 +325,7 @@ VR_LCD_EMU_DLLEXPORT VrEmuLcd* vrEmuLcdNew(int cols, int rows, vrEmuLcdCharacter
     }
     lcd->gdPtr = lcd->gdRam;
     lcd->numPixels = lcd->pixelsWidth * lcd->pixelsHeight;
-    lcd->pixels = (char*)malloc(lcd->numPixels);
+    lcd->pixels = (byte*)malloc(lcd->numPixels);
 
     switch (lcd->rows)
     {
@@ -356,10 +357,7 @@ VR_LCD_EMU_DLLEXPORT VrEmuLcd* vrEmuLcdNew(int cols, int rows, vrEmuLcdCharacter
       memset(lcd->gdRam, 0, GDRAM_SIZE);
     }
 
-    if (lcd->cgRam != NULL)
-    {
-      memset(lcd->cgRam, DEFAULT_CGRAM_BYTE, sizeof(lcd->cgRam));
-    }
+    memset(lcd->cgRam, DEFAULT_CGRAM_BYTE, sizeof(lcd->cgRam));
 
     if (lcd->pixels != NULL)
     {
@@ -736,7 +734,7 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdUpdatePixels(VrEmuLcd* lcd)
         for (int col = 0; col < lcd->cols; ++col)
         {
           // find top-left pixel for the current display character position
-          char* charTopLeft = lcd->pixels + (row * (GFX_CHAR_HEIGHT_PX) * lcd->pixelsWidth) + col * (GFX_CHAR_WIDTH_PX);
+          byte* charTopLeft = lcd->pixels + (row * (GFX_CHAR_HEIGHT_PX) * lcd->pixelsWidth) + col * (GFX_CHAR_WIDTH_PX);
 
           // find current character in ddram
           byte* ddPtr = lcd->ddRam + vrEmuLcdGetDataOffset(lcd, row, col);
@@ -751,7 +749,7 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdUpdatePixels(VrEmuLcd* lcd)
           for (int y = 0; y < GFX_CHAR_HEIGHT_PX; ++y)
           {
             // set pixel pointer
-            char* pixel = charTopLeft + y * lcd->pixelsWidth;
+            byte* pixel = charTopLeft + y * lcd->pixelsWidth;
             for (int x = 0; x < GFX_CHAR_WIDTH_PX; ++x)
             {
               // is the display on?
@@ -803,7 +801,7 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdUpdatePixels(VrEmuLcd* lcd)
       for (int col = 0; col < lcd->cols; ++col)
       {
         // find top-left pixel for the current display character position
-        char* charTopLeft = lcd->pixels + (row * (CHAR_HEIGHT_PX + 1) * lcd->pixelsWidth) + col * (CHAR_WIDTH_PX + 1);
+        byte* charTopLeft = lcd->pixels + (row * (CHAR_HEIGHT_PX + 1) * lcd->pixelsWidth) + col * (CHAR_WIDTH_PX + 1);
 
         // find current character in ddram
         byte* ddPtr = lcd->ddRam + vrEmuLcdGetDataOffset(lcd, row, col);
@@ -818,7 +816,7 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdUpdatePixels(VrEmuLcd* lcd)
         for (int y = 0; y < CHAR_HEIGHT_PX; ++y)
         {
           // set pixel pointer
-          char* pixel = charTopLeft + y * lcd->pixelsWidth;
+          byte* pixel = charTopLeft + y * lcd->pixelsWidth;
           for (int x = 0; x < CHAR_WIDTH_PX; ++x)
           {
             // is the display on?
