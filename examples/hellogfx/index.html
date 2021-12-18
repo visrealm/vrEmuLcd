@@ -91,7 +91,7 @@
         var scale = Math.min(height / lcd12864.height, width / lcd12864.width);
 
         // render the lcd screen
-        lcd.render(ctx, xOff + (30 * scale), yOff + (63 * scale), 650 * scale, 170 * scale);
+        lcd.render(ctx, xOff + (30 * scale), yOff + (63 * scale), 340 * scale, 230 * scale);
 
         // render the bezel
         ctx.drawImage(lcd12864, xOff, yOff, lcd12864.width * scale, lcd12864.height * scale);
