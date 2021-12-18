@@ -155,8 +155,7 @@ static void increment(VrEmuLcd* lcd)
   {
     if (offset >= 0x40) lcd->ddPtr = lcd->ddRam;
   }
-  // 4 row mode's funky addressing scheme
-  else if (lcd->rows > 2)
+  else if (lcd->rows > 1)
   {
     if (offset == 0x28) lcd->ddPtr = lcd->ddRam + 0x40;
     else if (offset == 0x68 || offset >= DDRAM_SIZE) lcd->ddPtr = lcd->ddRam;
@@ -182,12 +181,11 @@ static void decrement(VrEmuLcd* lcd)
   // find pointer offset from start
   ptrdiff_t offset = lcd->ddPtr - lcd->ddRam;
 
-  if (lcd->gdPtr)// && !lcd->graphicsMode)
+  if (lcd->gdPtr)
   {
     if (offset == -1) lcd->ddPtr = lcd->ddRam + 0x3f;
   }
-  // 4 row mode's funky addressing scheme
-  else if (lcd->rows > 2)
+  else if (lcd->rows > 1)
   {
     if (offset == -1) lcd->ddPtr = lcd->ddRam + 0x67;
     else if (offset == 0x39) lcd->ddPtr = lcd->ddRam  + 0x27;
@@ -668,7 +666,7 @@ VR_LCD_EMU_DLLEXPORT int vrEmuLcdGetDataOffset(VrEmuLcd* lcd, int row, int col)
   int dataCol = (col + lcd->scrollOffset) % lcd->dataWidthCols;
   int rowOffset = row * lcd->dataWidthCols;
 
-  if (lcd->rows > 2)
+  if (lcd->rows > 1)
   {
     if (lcd->gdPtr)
     {
