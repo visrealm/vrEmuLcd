@@ -16,6 +16,11 @@
 #include <math.h>
 #include <time.h>
 
+#if VR_LCD_EMU_STATIC
+#undef VR_LCD_EMU_DLLEXPORT
+#define VR_LCD_EMU_DLLEXPORT
+#endif
+
 
 /* PUBLIC CONSTANTS
  * ---------------------------------------- */

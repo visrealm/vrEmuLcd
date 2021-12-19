@@ -12,14 +12,15 @@
 #ifndef _VR_EMU_LCD_H_
 #define _VR_EMU_LCD_H_
 
-#if _EMSCRIPTEN
+#if VR_LCD_EMU_COMPILING_DLL
+  #define VR_LCD_EMU_DLLEXPORT __declspec(dllexport)
+#elif VR_LCD_EMU_STATIC
+  #define VR_LCD_EMU_DLLEXPORT extern
+#elif _EMSCRIPTEN
   #include <emscripten.h>
   #define VR_LCD_EMU_DLLEXPORT EMSCRIPTEN_KEEPALIVE
-#elif COMPILING_DLL
-  #define VR_LCD_EMU_DLLEXPORT __declspec(dllexport)
 #else
-  #define VR_LCD_EMU_DLLEXPORT 
-  //__declspec(dllimport)
+  #define VR_LCD_EMU_DLLEXPORT __declspec(dllimport)
 #endif
 
 #undef byte
