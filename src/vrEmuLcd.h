@@ -137,6 +137,16 @@ int vrEmuLcdGetDataOffset(VrEmuLcd* lcd, int row, int col);
 VR_LCD_EMU_DLLEXPORT
 byte vrEmuLcdReadByte(VrEmuLcd* lcd);
 
+/* Function:  vrEmuLcdReadByteNoInc
+ * --------------------
+ * read a byte from the lcd (RS is high, R/W is high)
+ * don't update the address/scroll 
+ *
+ * returns: the data (DB0 -> DB7) at the current address
+ */
+VR_LCD_EMU_DLLEXPORT
+byte vrEmuLcdReadByteNoInc(VrEmuLcd* lcd);
+
 /* Function:  vrEmuLcdReadAddress
  * --------------------
  * read the current address offset (RS is low, R/W is high)
