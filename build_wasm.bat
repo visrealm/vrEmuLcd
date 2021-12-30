@@ -12,6 +12,6 @@
 
 emcc -o bin\vrEmuLcdWasm.js ^
   -Oz ^
-  -D _EMSCRIPTEN src\vrEmuLcd.c ^
+  -D __EMSCRIPTEN__ src\vrEmuLcd.c ^
   -s EXPORT_NAME="'vrEmuLcdModule'" ^
   -s EXTRA_EXPORTED_RUNTIME_METHODS="['ccall','cwrap']"

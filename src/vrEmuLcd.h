@@ -16,7 +16,7 @@
   #define VR_LCD_EMU_DLLEXPORT __declspec(dllexport)
 #elif VR_LCD_EMU_STATIC
   #define VR_LCD_EMU_DLLEXPORT extern
-#elif _EMSCRIPTEN
+#elif __EMSCRIPTEN__
   #include <emscripten.h>
   #define VR_LCD_EMU_DLLEXPORT EMSCRIPTEN_KEEPALIVE
 #else
