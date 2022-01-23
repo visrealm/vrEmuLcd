@@ -34,46 +34,89 @@ It also now support most commands for a 128x64 graphics LCD [12864B datasheet](h
 
 ## Usage
 
-#### HTML
-    <script src="src/vrEmuLcd.js"></script>
-    <script src="bin/vrEmuLcdWasm.js"></script>
-    //...
-#### latest (github)
-    <script src="https://visrealm.github.io/vrEmuLcd/src/vrEmuLcd.js"></script>
-    <script src="https://visrealm.github.io/vrEmuLcd/bin/vrEmuLcdWasm.js"></script>
-    //...
+### C
+```c
+#define LCD_WIDTH 20
+#define LCD_HEIGHT 4
+
+VrEmuLcd      *lcd = vrEmuLcdNew(LCD_WIDTH, LCD_HEIGHT, EmuLcdRomA00);
+
+// send it commands:
+vrEmuLcdSendCommand(lcd, LCD_CMD_FUNCTION | LCD_CMD_FUNCTION_LCD_2LINE | 0x10);
+vrEmuLcdSendCommand(lcd, LCD_CMD_CLEAR);
+vrEmuLcdSendCommand(lcd, LCD_CMD_HOME);
+
+// send it data
+vrEmuLcdWriteByte(lcd, 'H');
+vrEmuLcdWriteByte(lcd, 'e');
+vrEmuLcdWriteByte(lcd, 'l');
+vrEmuLcdWriteByte(lcd, 'l');
+vrEmuLcdWriteByte(lcd, 'o');
+
+// or cheat
+vrEmuLcdWriteString(lcd, " world!");
+
+// then periodically, render it. 
+vrEmuLcdUpdatePixels(lcd);   // generates a snapshot of the pixels state
+
+for (int y = 0; y < vrEmuLcdNumPixelsY(lcd); ++y) {
+  for (int x = 0; x < vrEmuLcdNumPixelsX(lcd); ++x) {
+    // do whatever you like with the pixel information. render it to a texture, output it to  a console, whatever
+   // values returned are:  -1 = no pixel (character borders), 0 = pixel off, 1 = pixel on
+    char pixel = vrEmuLcdPixelState(lcd, x, y);
+  }
+}
+```
+
+### Web
+
+#### HTML (local)
+```html
+<script src="src/vrEmuLcd.js"></script>
+<script src="bin/vrEmuLcdWasm.js"></script>
+```
+#### HTML (live)
+```html
+<script src="https://visrealm.github.io/vrEmuLcd/src/vrEmuLcd.js"></script>
+<script src="https://visrealm.github.io/vrEmuLcd/bin/vrEmuLcdWasm.js"></script>
+```
     
 ## Example
 
-    <canvas id="lcd"></canvas>
-    ...
+```js
+<canvas id="lcd"></canvas>
+...
+<script>
     var canv = document.getElementById('lcd');
     var ctx = canv.getContext('2d');
-    
+
     vrEmuLcd.setLoadedCallback(function () {
 
       // create a new LCD object
       var lcd = vrEmuLcd.newLCD(16, 2, vrEmuLcd.CharacterRom.Eurpoean);
-      
+
       // set up the display
       lcd.sendCommand(LCD_CMD_DISPLAY | LCD_CMD_DISPLAY_ON);
-      
+
       lcd.writeString("Hello, World!");
-      
+
       lcd.render(ctx, 0, 0, 800, 400);
     });
+</script>
+```
 
 ## LCD API
 
 #### constuctor
-`var lcd = vrEmuLcd.newLCD(columns, rows, charSet);`  
+```js
+var lcd = vrEmuLcd.newLCD(columns, rows, charSet);
+```
 - `columns`: - number of columns
 - `rows`: - number of rows
 - `charSet`: - character set. One of: `vrEmuLcd.CharacterRom.European`, `vrEmuLcd.CharacterRom.Japanese`
 
 #### sendCommand(commandByte)
-`lcd.sendCommand(data);` - send a command to the instruction register of the lcd
-
+Send a command to the instruction register of the lcd
 Command constants are defined:
 - `LCD_CMD_CLEAR` - clear the display
 
@@ -100,28 +143,31 @@ Command constants are defined:
 - `LCD_CMD_SET_DRAM_ADDR` - set the CGRAM address (actual address uses lower 7 bits)
 
 #### writeByte(dataByte)
-`lcd.writeByte(dataByte);` - write a byte to the data register of the lcd
+Write a byte to the data register of the lcd
 
 #### writeString(str)
-`lcd.writeString(str);` - write a string to the data register of the lcd
+Write a string to the data register of the lcd
 
 #### getDataOffset(screenX, screenY)
-`lcd.getDataOffset(screenX, screenY);` - return the ddram offset for the given screen location
+Return the ddram offset for the given screen location
 
 #### readByte()
-`lcd.readByte();` - read the current byte from cgram or ddram (determined by current address) 
+Read the current byte from cgram or ddram (determined by current address) 
 
 #### readAddress()
-`lcd.readAddress();` - read the current address offset in cgram or ddram
+Read the current address offset in cgram or ddram
 
 #### pixelState(pixelX, pixelY)
-`lcd.pixelState(pixelX, pixelY);` - return the pixel state at the given location
+Return the pixel state at the given location
 - `-1` - no pixel (eg. margin)
 - `0` - pixel off
 - `1` - pixel on
 
 #### colorScheme
-`lcd.colorScheme = vrEmuLcd.Schemes.WhiteOnBlue;` - set the color scheme
+Set/get the color scheme. eg:
+```js
+lcd.colorScheme = vrEmuLcd.Schemes.WhiteOnBlue;
+```
 Standard color schemes:
 - `vrEmuLcd.Schemes.WhiteOnBlue` (default)
 - `vrEmuLcd.Schemes.BlackOnBlue`
@@ -132,7 +178,7 @@ Standard color schemes:
 or, provide your own. `{ BackColor: <backcolor>, PixelOnColor: <pixeloncolor>, PixelOffColor: <pixeloffcolor> }`
 
 #### render(ctx, x, y, width, height)
-`lcd.render(ctx, x, y, width, height);` - render to a 2d canvas context
+Render to a 2d canvas context
 - `ctx` - the canvas to render to
 
 ## License
