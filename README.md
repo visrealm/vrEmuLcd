@@ -45,6 +45,7 @@ VrEmuLcd      *lcd = vrEmuLcdNew(LCD_WIDTH, LCD_HEIGHT, EmuLcdRomA00);
 vrEmuLcdSendCommand(lcd, LCD_CMD_FUNCTION | LCD_CMD_FUNCTION_LCD_2LINE | 0x10);
 vrEmuLcdSendCommand(lcd, LCD_CMD_CLEAR);
 vrEmuLcdSendCommand(lcd, LCD_CMD_HOME);
+vrEmuLcdSendCommand(lcd, LCD_CMD_DISPLAY | LCD_CMD_DISPLAY_ON);
 
 // send it data
 vrEmuLcdWriteByte(lcd, 'H');

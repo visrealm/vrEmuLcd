@@ -24,37 +24,37 @@
 
 /* PUBLIC CONSTANTS
  * ---------------------------------------- */
-VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_CLEAR                = 0b00000001;
-VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_HOME                 = 0b00000010;
+VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_CLEAR                = 0b00000001;
+VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_HOME                 = 0b00000010;
 
-VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_ENTRY_MODE           = 0b00000100;
-VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_ENTRY_MODE_INCREMENT = 0b00000010;
-VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_ENTRY_MODE_DECREMENT = 0b00000000;
-VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_ENTRY_MODE_SHIFT     = 0b00000001;
+VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_ENTRY_MODE           = 0b00000100;
+VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_ENTRY_MODE_INCREMENT = 0b00000010;
+VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_ENTRY_MODE_DECREMENT = 0b00000000;
+VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_ENTRY_MODE_SHIFT     = 0b00000001;
 
-VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_DISPLAY              = 0b00001000;
-VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_DISPLAY_ON           = 0b00000100;
-VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_DISPLAY_CURSOR       = 0b00000010;
-VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_DISPLAY_CURSOR_BLINK = 0b00000001;
+VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_DISPLAY              = 0b00001000;
+VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_DISPLAY_ON           = 0b00000100;
+VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_DISPLAY_CURSOR       = 0b00000010;
+VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_DISPLAY_CURSOR_BLINK = 0b00000001;
 
-VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_SHIFT                = 0b00010000;
-VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_SHIFT_CURSOR         = 0b00000000;
-VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_SHIFT_DISPLAY        = 0b00001000;
-VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_SHIFT_LEFT           = 0b00000000;
-VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_SHIFT_RIGHT          = 0b00000100;
+VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_SHIFT                = 0b00010000;
+VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_SHIFT_CURSOR         = 0b00000000;
+VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_SHIFT_DISPLAY        = 0b00001000;
+VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_SHIFT_LEFT           = 0b00000000;
+VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_SHIFT_RIGHT          = 0b00000100;
 
-VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_FUNCTION             = 0b00100000;
-VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_FUNCTION_LCD_1LINE   = 0b00000000;
-VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_FUNCTION_LCD_2LINE   = 0b00001000;
-VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_FUNCTION_EXT_MODE    = 0b00000100;
-VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_FUNCTION_STD_MODE    = 0b00000000;
+VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_FUNCTION             = 0b00100000;
+VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_FUNCTION_LCD_1LINE   = 0b00000000;
+VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_FUNCTION_LCD_2LINE   = 0b00001000;
+VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_FUNCTION_EXT_MODE    = 0b00000100;
+VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_FUNCTION_STD_MODE    = 0b00000000;
 
-VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_EXT_FUNCTION_GFX     = 0b00000010;
-VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_EXT_FUNCTION_STD     = 0b00000000;
+VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_EXT_FUNCTION_GFX     = 0b00000010;
+VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_EXT_FUNCTION_STD     = 0b00000000;
 
 
-VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_SET_CGRAM_ADDR       = 0b01000000;
-VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_SET_DRAM_ADDR        = 0b10000000;
+VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_SET_CGRAM_ADDR       = 0b01000000;
+VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_SET_DRAM_ADDR        = 0b10000000;
 
 /* PRIVATE CONSTANTS
  * ---------------------------------------- */
@@ -91,9 +91,9 @@ VR_LCD_EMU_DLLEXPORT const byte LCD_CMD_SET_DRAM_ADDR        = 0b10000000;
 
 
 /* font roms */
-static const byte fontA00[ROM_FONT_CHARS][CHAR_WIDTH_PX];
-static const byte fontA02[ROM_FONT_CHARS][CHAR_WIDTH_PX];
-static const byte fontGfx[ROM_FONT_CHARS][GFX_CHAR_HEIGHT_PX];
+static const uint8_t fontA00[ROM_FONT_CHARS][CHAR_WIDTH_PX];
+static const uint8_t fontA02[ROM_FONT_CHARS][CHAR_WIDTH_PX];
+static const uint8_t fontGfx[ROM_FONT_CHARS][GFX_CHAR_HEIGHT_PX];
 
 #define DEFAULT_CGRAM_BYTE  0xaa
 
@@ -110,31 +110,31 @@ struct vrEmuLcd_s
   int rows;
 
   // current state
-  byte entryModeFlags;
-  byte displayFlags;
+  uint8_t entryModeFlags;
+  uint8_t displayFlags;
   int scrollOffset;
 
   // ddRam storage
-  byte* ddRam;
-  byte* ddPtr;
+  uint8_t* ddRam;
+  uint8_t* ddPtr;
   int dataWidthCols;
 
   // cgRam storage
-  byte cgRam[CGRAM_STORAGE_CHARS][CHAR_HEIGHT_PX];
-  byte* cgPtr;
+  uint8_t cgRam[CGRAM_STORAGE_CHARS][CHAR_HEIGHT_PX];
+  uint8_t* cgPtr;
 
   // which character rom?
   vrEmuLcdCharacterRom characterRom;
 
   // graphics LCD details
-  byte extendedMode;
-  byte graphicsMode;
-  byte graphicsVAddr;  /* for 2-step address setting */
-  byte* gdRam;         /* only set if we are a graphics lcd */
-  byte* gdPtr;
+  uint8_t extendedMode;
+  uint8_t graphicsMode;
+  uint8_t graphicsVAddr;  /* for 2-step address setting */
+  uint8_t* gdRam;         /* only set if we are a graphics lcd */
+  uint8_t* gdPtr;
 
   // display pixels
-  byte* pixels;
+  uint8_t* pixels;
   int pixelsWidth;
   int pixelsHeight;
   int numPixels;
@@ -220,17 +220,17 @@ static void doShift(VrEmuLcd* lcd)
     if (lcd->entryModeFlags & LCD_CMD_ENTRY_MODE_INCREMENT)
     {
       ++lcd->cgPtr;
-      if (lcd->cgPtr >= (byte*)lcd->cgRam + sizeof(lcd->cgRam))
+      if (lcd->cgPtr >= (uint8_t*)lcd->cgRam + sizeof(lcd->cgRam))
       {
-        lcd->cgPtr = (byte*)lcd->cgRam;
+        lcd->cgPtr = (uint8_t*)lcd->cgRam;
       }
     }
     else
     {
       --lcd->cgPtr;
-      if (lcd->cgPtr < (byte*)lcd->cgRam)
+      if (lcd->cgPtr < (uint8_t*)lcd->cgRam)
       {
-        lcd->cgPtr = (byte*)lcd->cgRam + sizeof(lcd->cgRam) - 1;
+        lcd->cgPtr = (uint8_t*)lcd->cgRam + sizeof(lcd->cgRam) - 1;
       }
     }
   }
@@ -238,9 +238,9 @@ static void doShift(VrEmuLcd* lcd)
   else if (lcd->graphicsMode)
   {
     ++lcd->gdPtr;
-    if (lcd->gdPtr >= (byte*)lcd->gdRam + GDRAM_SIZE)
+    if (lcd->gdPtr >= (uint8_t*)lcd->gdRam + GDRAM_SIZE)
     {
-      lcd->gdPtr = (byte*)lcd->gdRam;
+      lcd->gdPtr = (uint8_t*)lcd->gdRam;
     }
   }
   else
@@ -304,7 +304,7 @@ VR_LCD_EMU_DLLEXPORT VrEmuLcd* vrEmuLcdNew(int cols, int rows, vrEmuLcdCharacter
     lcd->rows = rows;
     lcd->characterRom = rom;
 
-    lcd->ddRam = (byte*)malloc(DDRAM_SIZE);
+    lcd->ddRam = (uint8_t*)malloc(DDRAM_SIZE);
     lcd->ddPtr = lcd->ddRam;
     lcd->entryModeFlags = LCD_CMD_ENTRY_MODE_INCREMENT;
     lcd->displayFlags = 0x00;
@@ -317,7 +317,7 @@ VR_LCD_EMU_DLLEXPORT VrEmuLcd* vrEmuLcdNew(int cols, int rows, vrEmuLcdCharacter
     lcd->gdRam = NULL;
     if (graphicsLCD)
     {
-      lcd->gdRam = (byte*)malloc(GDRAM_SIZE);
+      lcd->gdRam = (uint8_t*)malloc(GDRAM_SIZE);
       lcd->pixelsWidth = GRAPHICS_WIDTH_PX;
       lcd->pixelsHeight = GRAPHICS_HEIGHT_PX;
     }
@@ -328,7 +328,7 @@ VR_LCD_EMU_DLLEXPORT VrEmuLcd* vrEmuLcdNew(int cols, int rows, vrEmuLcdCharacter
     }
     lcd->gdPtr = lcd->gdRam;
     lcd->numPixels = lcd->pixelsWidth * lcd->pixelsHeight;
-    lcd->pixels = (byte*)malloc(lcd->numPixels);
+    lcd->pixels = (uint8_t*)malloc(lcd->numPixels);
 
     switch (lcd->rows)
     {
@@ -396,9 +396,9 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdDestroy(VrEmuLcd* lcd)
  * --------------------
  * send a command to the lcd (RS is low)
  *
- * byte: the data (DB0 -> DB7) to send
+ * command: the data (DB0 -> DB7) to send
  */
-VR_LCD_EMU_DLLEXPORT void vrEmuLcdSendCommand(VrEmuLcd* lcd, byte command)
+VR_LCD_EMU_DLLEXPORT void vrEmuLcdSendCommand(VrEmuLcd* lcd, uint8_t command)
 {
   if (command & LCD_CMD_SET_DRAM_ADDR)
   {
@@ -430,7 +430,7 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdSendCommand(VrEmuLcd* lcd, byte command)
   else if (command & LCD_CMD_SET_CGRAM_ADDR)
   {
     // cgram address in remaining 6 bits
-    lcd->cgPtr = (byte*)lcd->cgRam + (command & 0x3f);
+    lcd->cgPtr = (uint8_t*)lcd->cgRam + (command & 0x3f);
   }
   else if (command & LCD_CMD_FUNCTION)
   {
@@ -498,21 +498,21 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdSendCommand(VrEmuLcd* lcd, byte command)
  * --------------------
  * write a byte to the lcd (RS is high)
  *
- * byte: the data (DB0 -> DB7) to send
+ * data: the data (DB0 -> DB7) to send
  */
-VR_LCD_EMU_DLLEXPORT void vrEmuLcdWriteByte(VrEmuLcd* lcd, byte data)
+VR_LCD_EMU_DLLEXPORT void vrEmuLcdWriteByte(VrEmuLcd* lcd, uint8_t data)
 {
   if (lcd->cgPtr)
   {
     // find row offset
-    int row = (lcd->cgPtr - (byte*)lcd->cgRam) % CHAR_HEIGHT_PX;
+    int row = (lcd->cgPtr - (uint8_t*)lcd->cgRam) % CHAR_HEIGHT_PX;
 
-    // find starting byte for the current character
-    byte* startAddr = lcd->cgPtr - row;
+    // find starting uint8_t for the current character
+    uint8_t* startAddr = lcd->cgPtr - row;
 
     for (int i = 0; i < CHAR_WIDTH_PX; ++i)
     {
-      byte bit = data & ((0x01 << (CHAR_WIDTH_PX - 1)) >> i);
+      uint8_t bit = data & ((0x01 << (CHAR_WIDTH_PX - 1)) >> i);
       if (bit)
       {
         *(startAddr + i) |= (0x80 >> row);
@@ -542,9 +542,9 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdWriteByte(VrEmuLcd* lcd, byte data)
  *
  * returns: the data (DB0 -> DB7) at the current address
  */
- VR_LCD_EMU_DLLEXPORT byte vrEmuLcdReadByte(VrEmuLcd* lcd)
+ VR_LCD_EMU_DLLEXPORT uint8_t vrEmuLcdReadByte(VrEmuLcd* lcd)
 {
-  byte data = vrEmuLcdReadByteNoInc(lcd);
+  uint8_t data = vrEmuLcdReadByteNoInc(lcd);
 
   doShift(lcd);
 
@@ -560,17 +560,17 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdWriteByte(VrEmuLcd* lcd, byte data)
   *
   * returns: the data (DB0 -> DB7) at the current address
   */
- VR_LCD_EMU_DLLEXPORT byte vrEmuLcdReadByteNoInc(VrEmuLcd* lcd)
+ VR_LCD_EMU_DLLEXPORT uint8_t vrEmuLcdReadByteNoInc(VrEmuLcd* lcd)
  {
-   byte data = 0;
+   uint8_t data = 0;
 
    if (lcd->cgPtr)
    {
      // find row offset
-     int row = (lcd->cgPtr - (byte*)lcd->cgRam) % 8;
+     int row = (lcd->cgPtr - (uint8_t*)lcd->cgRam) % 8;
 
-     // find starting byte for the current character
-     byte* startAddr = lcd->cgPtr - row;
+     // find starting uint8_t for the current character
+     uint8_t* startAddr = lcd->cgPtr - row;
 
      for (int i = 0; i < CHAR_WIDTH_PX; ++i)
      {
@@ -595,14 +595,14 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdWriteByte(VrEmuLcd* lcd, byte data)
  *
  * returns: the current address
  */
-VR_LCD_EMU_DLLEXPORT byte vrEmuLcdReadAddress(VrEmuLcd* lcd)
+VR_LCD_EMU_DLLEXPORT uint8_t vrEmuLcdReadAddress(VrEmuLcd* lcd)
 {
   if (lcd->cgPtr)
   {
-    return (lcd->cgPtr - (byte*)lcd->cgRam) & 0x3f;
+    return (lcd->cgPtr - (uint8_t*)lcd->cgRam) & 0x3f;
   }
 
-  byte addr = (lcd->ddPtr - lcd->ddRam) & 0x7f;
+  uint8_t addr = (lcd->ddPtr - lcd->ddRam) & 0x7f;
   if (lcd->gdPtr) addr >>= 1;
  
   return addr;
@@ -638,7 +638,7 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdWriteString(VrEmuLcd* lcd, const char* str)
  *    0 - 15   cgram
  *    16 - 255 rom
  */
-VR_LCD_EMU_DLLEXPORT const byte* vrEmuLcdCharBits(VrEmuLcd* lcd, byte c)
+VR_LCD_EMU_DLLEXPORT const uint8_t* vrEmuLcdCharBits(VrEmuLcd* lcd, uint8_t c)
 {
   if (lcd->gdRam) // graphic LCD?
   {
@@ -714,7 +714,7 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdUpdatePixels(VrEmuLcd* lcd)
   {
     if (lcd->graphicsMode)
     {
-      byte* p = lcd->pixels - 1;
+      uint8_t* p = lcd->pixels - 1;
 
       for (size_t yPos = 0; yPos < GRAPHICS_HEIGHT_PX; ++yPos)
       {
@@ -723,7 +723,7 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdUpdatePixels(VrEmuLcd* lcd)
 
         for (size_t xPos = 0; xPos < GRAPHICS_WIDTH_PX / 8; ++xPos)
         {
-          byte b = lcd->gdRam[offset + xPos];
+          uint8_t b = lcd->gdRam[offset + xPos];
           for (int i = 0; i < 8; ++i)
           {
             *(++p) = b & 0x80 ? 1 : 0;
@@ -753,22 +753,22 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdUpdatePixels(VrEmuLcd* lcd)
         for (int col = 0; col < lcd->cols; ++col)
         {
           // find top-left pixel for the current display character position
-          byte* charTopLeft = lcd->pixels + (row * (GFX_CHAR_HEIGHT_PX) * lcd->pixelsWidth) + col * (GFX_CHAR_WIDTH_PX);
+          uint8_t* charTopLeft = lcd->pixels + (row * (GFX_CHAR_HEIGHT_PX) * lcd->pixelsWidth) + col * (GFX_CHAR_WIDTH_PX);
 
           // find current character in ddram
-          byte* ddPtr = lcd->ddRam + vrEmuLcdGetDataOffset(lcd, row, col);
+          uint8_t* ddPtr = lcd->ddRam + vrEmuLcdGetDataOffset(lcd, row, col);
 
           // only draw cursor if the data pointer is pointing at this character
           int drawCursor = cursorOn && (ddPtr == lcd->ddPtr);
 
           // get the character data (bits) for the current character
-          const byte* bits = vrEmuLcdCharBits(lcd, *ddPtr);
+          const uint8_t* bits = vrEmuLcdCharBits(lcd, *ddPtr);
 
           // apply its bits to the pixel data
           for (int y = 0; y < GFX_CHAR_HEIGHT_PX; ++y)
           {
             // set pixel pointer
-            byte* pixel = charTopLeft + y * lcd->pixelsWidth;
+            uint8_t* pixel = charTopLeft + y * lcd->pixelsWidth;
             for (int x = 0; x < GFX_CHAR_WIDTH_PX; ++x)
             {
               // is the display on?
@@ -820,22 +820,22 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdUpdatePixels(VrEmuLcd* lcd)
       for (int col = 0; col < lcd->cols; ++col)
       {
         // find top-left pixel for the current display character position
-        byte* charTopLeft = lcd->pixels + (row * (CHAR_HEIGHT_PX + 1) * lcd->pixelsWidth) + col * (CHAR_WIDTH_PX + 1);
+        uint8_t* charTopLeft = lcd->pixels + (row * (CHAR_HEIGHT_PX + 1) * lcd->pixelsWidth) + col * (CHAR_WIDTH_PX + 1);
 
         // find current character in ddram
-        byte* ddPtr = lcd->ddRam + vrEmuLcdGetDataOffset(lcd, row, col);
+        uint8_t* ddPtr = lcd->ddRam + vrEmuLcdGetDataOffset(lcd, row, col);
 
         // only draw cursor if the data pointer is pointing at this character
         int drawCursor = cursorOn && (ddPtr == lcd->ddPtr);
 
         // get the character data (bits) for the current character
-        const byte* bits = vrEmuLcdCharBits(lcd, *ddPtr);
+        const uint8_t* bits = vrEmuLcdCharBits(lcd, *ddPtr);
 
         // apply its bits to the pixel data
         for (int y = 0; y < CHAR_HEIGHT_PX; ++y)
         {
           // set pixel pointer
-          byte* pixel = charTopLeft + y * lcd->pixelsWidth;
+          uint8_t* pixel = charTopLeft + y * lcd->pixelsWidth;
           for (int x = 0; x < CHAR_WIDTH_PX; ++x)
           {
             // is the display on?
@@ -918,7 +918,7 @@ VR_LCD_EMU_DLLEXPORT char vrEmuLcdPixelState(VrEmuLcd* lcd, int x, int y)
 
 // A00 (Japanese) character set. 
 // skip first 16 characters reserved for CGRAM
-static const byte fontA00[ROM_FONT_CHARS][CHAR_WIDTH_PX] = {
+static const uint8_t fontA00[ROM_FONT_CHARS][CHAR_WIDTH_PX] = {
   {0x00, 0x00, 0x00, 0x00, 0x00}, //  16 -
   {0x00, 0x00, 0x00, 0x00, 0x00}, //  17 -
   {0x00, 0x00, 0x00, 0x00, 0x00}, //  18 -
@@ -1164,7 +1164,7 @@ static const byte fontA00[ROM_FONT_CHARS][CHAR_WIDTH_PX] = {
 
 // A02 (European) character set. 
 // skip first 16 characters reserved for CGRAM
-static const byte fontA02[ROM_FONT_CHARS][CHAR_WIDTH_PX] = {
+static const uint8_t fontA02[ROM_FONT_CHARS][CHAR_WIDTH_PX] = {
  {0x00, 0x7f, 0x3e, 0x1c, 0x08}, //  16 -
  {0x08, 0x1c, 0x3e, 0x7f, 0x00}, //  17 -
  {0x30, 0x50, 0x00, 0x30, 0x50}, //  18 -
@@ -1408,7 +1408,7 @@ static const byte fontA02[ROM_FONT_CHARS][CHAR_WIDTH_PX] = {
 };
 
 
-static const byte fontGfx[][GFX_CHAR_HEIGHT_PX] = {
+static const uint8_t fontGfx[][GFX_CHAR_HEIGHT_PX] = {
 /*  {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00},
   {0x00,0x00,0x7e,0x81,0xa5,0x81,0x81,0xa5,0x99,0x81,0x81,0x7e,0x00,0x00,0x00,0x00},
   {0x00,0x00,0x7e,0xff,0xdb,0xff,0xff,0xdb,0xe7,0xff,0xff,0x7e,0x00,0x00,0x00,0x00},
