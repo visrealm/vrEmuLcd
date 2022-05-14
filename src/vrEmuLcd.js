@@ -250,7 +250,7 @@ vrEmuLcdModule = {
       }
     }
 
-    vrEmuLcd.isLoaded = true;
+    vrEmuLcd._isLoaded = true;
     vrEmuLcd._onLoaded();
    }
 }
