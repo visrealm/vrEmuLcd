@@ -1,5 +1,7 @@
 # vrEmuLcd - HD44780 Character LCD Emulator
 
+<a href="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-multi-platform.yml"><img src="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-multi-platform.yml/badge.svg"/></a>
+
 Core engine written in C with a flexible Web front-end.
 
 This Character LCD Emulator can be used to emulate most standard LCD displays.

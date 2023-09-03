@@ -16,45 +16,45 @@
 #include <math.h>
 #include <time.h>
 
-#if VR_LCD_EMU_STATIC
-#undef VR_LCD_EMU_DLLEXPORT
-#define VR_LCD_EMU_DLLEXPORT
+#ifdef VR_EMU_LCD_STATIC
+#undef VR_EMU_LCD_DLLEXPORT
+#define VR_EMU_LCD_DLLEXPORT
 #endif
 
 
 /* PUBLIC CONSTANTS
  * ---------------------------------------- */
-VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_CLEAR                = 0b00000001;
-VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_HOME                 = 0b00000010;
+VR_EMU_LCD_DLLEXPORT const uint8_t LCD_CMD_CLEAR                = 0b00000001;
+VR_EMU_LCD_DLLEXPORT const uint8_t LCD_CMD_HOME                 = 0b00000010;
 
-VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_ENTRY_MODE           = 0b00000100;
-VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_ENTRY_MODE_INCREMENT = 0b00000010;
-VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_ENTRY_MODE_DECREMENT = 0b00000000;
-VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_ENTRY_MODE_SHIFT     = 0b00000001;
+VR_EMU_LCD_DLLEXPORT const uint8_t LCD_CMD_ENTRY_MODE           = 0b00000100;
+VR_EMU_LCD_DLLEXPORT const uint8_t LCD_CMD_ENTRY_MODE_INCREMENT = 0b00000010;
+VR_EMU_LCD_DLLEXPORT const uint8_t LCD_CMD_ENTRY_MODE_DECREMENT = 0b00000000;
+VR_EMU_LCD_DLLEXPORT const uint8_t LCD_CMD_ENTRY_MODE_SHIFT     = 0b00000001;
 
-VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_DISPLAY              = 0b00001000;
-VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_DISPLAY_ON           = 0b00000100;
-VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_DISPLAY_CURSOR       = 0b00000010;
-VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_DISPLAY_CURSOR_BLINK = 0b00000001;
+VR_EMU_LCD_DLLEXPORT const uint8_t LCD_CMD_DISPLAY              = 0b00001000;
+VR_EMU_LCD_DLLEXPORT const uint8_t LCD_CMD_DISPLAY_ON           = 0b00000100;
+VR_EMU_LCD_DLLEXPORT const uint8_t LCD_CMD_DISPLAY_CURSOR       = 0b00000010;
+VR_EMU_LCD_DLLEXPORT const uint8_t LCD_CMD_DISPLAY_CURSOR_BLINK = 0b00000001;
 
-VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_SHIFT                = 0b00010000;
-VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_SHIFT_CURSOR         = 0b00000000;
-VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_SHIFT_DISPLAY        = 0b00001000;
-VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_SHIFT_LEFT           = 0b00000000;
-VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_SHIFT_RIGHT          = 0b00000100;
+VR_EMU_LCD_DLLEXPORT const uint8_t LCD_CMD_SHIFT                = 0b00010000;
+VR_EMU_LCD_DLLEXPORT const uint8_t LCD_CMD_SHIFT_CURSOR         = 0b00000000;
+VR_EMU_LCD_DLLEXPORT const uint8_t LCD_CMD_SHIFT_DISPLAY        = 0b00001000;
+VR_EMU_LCD_DLLEXPORT const uint8_t LCD_CMD_SHIFT_LEFT           = 0b00000000;
+VR_EMU_LCD_DLLEXPORT const uint8_t LCD_CMD_SHIFT_RIGHT          = 0b00000100;
 
-VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_FUNCTION             = 0b00100000;
-VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_FUNCTION_LCD_1LINE   = 0b00000000;
-VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_FUNCTION_LCD_2LINE   = 0b00001000;
-VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_FUNCTION_EXT_MODE    = 0b00000100;
-VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_FUNCTION_STD_MODE    = 0b00000000;
+VR_EMU_LCD_DLLEXPORT const uint8_t LCD_CMD_FUNCTION             = 0b00100000;
+VR_EMU_LCD_DLLEXPORT const uint8_t LCD_CMD_FUNCTION_LCD_1LINE   = 0b00000000;
+VR_EMU_LCD_DLLEXPORT const uint8_t LCD_CMD_FUNCTION_LCD_2LINE   = 0b00001000;
+VR_EMU_LCD_DLLEXPORT const uint8_t LCD_CMD_FUNCTION_EXT_MODE    = 0b00000100;
+VR_EMU_LCD_DLLEXPORT const uint8_t LCD_CMD_FUNCTION_STD_MODE    = 0b00000000;
 
-VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_EXT_FUNCTION_GFX     = 0b00000010;
-VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_EXT_FUNCTION_STD     = 0b00000000;
+VR_EMU_LCD_DLLEXPORT const uint8_t LCD_CMD_EXT_FUNCTION_GFX     = 0b00000010;
+VR_EMU_LCD_DLLEXPORT const uint8_t LCD_CMD_EXT_FUNCTION_STD     = 0b00000000;
 
 
-VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_SET_CGRAM_ADDR       = 0b01000000;
-VR_LCD_EMU_DLLEXPORT const uint8_t LCD_CMD_SET_DRAM_ADDR        = 0b10000000;
+VR_EMU_LCD_DLLEXPORT const uint8_t LCD_CMD_SET_CGRAM_ADDR       = 0b01000000;
+VR_EMU_LCD_DLLEXPORT const uint8_t LCD_CMD_SET_DRAM_ADDR        = 0b10000000;
 
 /* PRIVATE CONSTANTS
  * ---------------------------------------- */
@@ -277,7 +277,7 @@ static void doShift(VrEmuLcd* lcd)
  * rows: number of display rows (1, 2 or 4)
  * rom:  character rom to load
  */
-VR_LCD_EMU_DLLEXPORT VrEmuLcd* vrEmuLcdNew(int cols, int rows, vrEmuLcdCharacterRom rom)
+VR_EMU_LCD_DLLEXPORT VrEmuLcd* vrEmuLcdNew(int cols, int rows, vrEmuLcdCharacterRom rom)
 {
   int graphicsLCD = 0;
 
@@ -379,7 +379,7 @@ VR_LCD_EMU_DLLEXPORT VrEmuLcd* vrEmuLcdNew(int cols, int rows, vrEmuLcdCharacter
  *
  * lcd: lcd object to destroy / clean up
  */
-VR_LCD_EMU_DLLEXPORT void vrEmuLcdDestroy(VrEmuLcd* lcd)
+VR_EMU_LCD_DLLEXPORT void vrEmuLcdDestroy(VrEmuLcd* lcd)
 {
   if (lcd)
   {
@@ -398,7 +398,7 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdDestroy(VrEmuLcd* lcd)
  *
  * command: the data (DB0 -> DB7) to send
  */
-VR_LCD_EMU_DLLEXPORT void vrEmuLcdSendCommand(VrEmuLcd* lcd, uint8_t command)
+VR_EMU_LCD_DLLEXPORT void vrEmuLcdSendCommand(VrEmuLcd* lcd, uint8_t command)
 {
   if (command & LCD_CMD_SET_DRAM_ADDR)
   {
@@ -500,7 +500,7 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdSendCommand(VrEmuLcd* lcd, uint8_t command)
  *
  * data: the data (DB0 -> DB7) to send
  */
-VR_LCD_EMU_DLLEXPORT void vrEmuLcdWriteByte(VrEmuLcd* lcd, uint8_t data)
+VR_EMU_LCD_DLLEXPORT void vrEmuLcdWriteByte(VrEmuLcd* lcd, uint8_t data)
 {
   if (lcd->cgPtr)
   {
@@ -542,7 +542,7 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdWriteByte(VrEmuLcd* lcd, uint8_t data)
  *
  * returns: the data (DB0 -> DB7) at the current address
  */
- VR_LCD_EMU_DLLEXPORT uint8_t vrEmuLcdReadByte(VrEmuLcd* lcd)
+ VR_EMU_LCD_DLLEXPORT uint8_t vrEmuLcdReadByte(VrEmuLcd* lcd)
 {
   uint8_t data = vrEmuLcdReadByteNoInc(lcd);
 
@@ -560,7 +560,7 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdWriteByte(VrEmuLcd* lcd, uint8_t data)
   *
   * returns: the data (DB0 -> DB7) at the current address
   */
- VR_LCD_EMU_DLLEXPORT uint8_t vrEmuLcdReadByteNoInc(VrEmuLcd* lcd)
+ VR_EMU_LCD_DLLEXPORT uint8_t vrEmuLcdReadByteNoInc(VrEmuLcd* lcd)
  {
    uint8_t data = 0;
 
@@ -595,7 +595,7 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdWriteByte(VrEmuLcd* lcd, uint8_t data)
  *
  * returns: the current address
  */
-VR_LCD_EMU_DLLEXPORT uint8_t vrEmuLcdReadAddress(VrEmuLcd* lcd)
+VR_EMU_LCD_DLLEXPORT uint8_t vrEmuLcdReadAddress(VrEmuLcd* lcd)
 {
   if (lcd->cgPtr)
   {
@@ -616,7 +616,7 @@ VR_LCD_EMU_DLLEXPORT uint8_t vrEmuLcdReadAddress(VrEmuLcd* lcd)
  *
  * str: the string to write.
  */
-VR_LCD_EMU_DLLEXPORT void vrEmuLcdWriteString(VrEmuLcd* lcd, const char* str)
+VR_EMU_LCD_DLLEXPORT void vrEmuLcdWriteString(VrEmuLcd* lcd, const char* str)
 {
   const char* ddPtr = str;
   while (*ddPtr != '\0')
@@ -638,7 +638,7 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdWriteString(VrEmuLcd* lcd, const char* str)
  *    0 - 15   cgram
  *    16 - 255 rom
  */
-VR_LCD_EMU_DLLEXPORT const uint8_t* vrEmuLcdCharBits(VrEmuLcd* lcd, uint8_t c)
+VR_EMU_LCD_DLLEXPORT const uint8_t* vrEmuLcdCharBits(VrEmuLcd* lcd, uint8_t c)
 {
   if (lcd->gdRam) // graphic LCD?
   {
@@ -674,7 +674,7 @@ VR_LCD_EMU_DLLEXPORT const uint8_t* vrEmuLcdCharBits(VrEmuLcd* lcd, uint8_t c)
  *
  * can be used to set the current cursor address
  */
-VR_LCD_EMU_DLLEXPORT int vrEmuLcdGetDataOffset(VrEmuLcd* lcd, int row, int col)
+VR_EMU_LCD_DLLEXPORT int vrEmuLcdGetDataOffset(VrEmuLcd* lcd, int row, int col)
 {
   // adjust for display scroll offset
   if (row >= lcd->rows) row = lcd->rows - 1;
@@ -708,7 +708,7 @@ VR_LCD_EMU_DLLEXPORT int vrEmuLcdGetDataOffset(VrEmuLcd* lcd, int row, int col)
  * updates the display's pixel data
  * changes are only reflected in the pixel data when this function is called
  */
-VR_LCD_EMU_DLLEXPORT void vrEmuLcdUpdatePixels(VrEmuLcd* lcd)
+VR_EMU_LCD_DLLEXPORT void vrEmuLcdUpdatePixels(VrEmuLcd* lcd)
 {
   if (lcd->gdRam) // is a graphics LCD
   {
@@ -872,7 +872,7 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdUpdatePixels(VrEmuLcd* lcd)
  * ----------------------------------------
  * get the number of pixels for the entire display
  */
-VR_LCD_EMU_DLLEXPORT void vrEmuLcdNumPixels(VrEmuLcd* lcd, int* cols, int* rows)
+VR_EMU_LCD_DLLEXPORT void vrEmuLcdNumPixels(VrEmuLcd* lcd, int* cols, int* rows)
 {
   if (cols)* cols = vrEmuLcdNumPixelsX(lcd);
   if (rows)* rows = vrEmuLcdNumPixelsY(lcd);
@@ -883,7 +883,7 @@ VR_LCD_EMU_DLLEXPORT void vrEmuLcdNumPixels(VrEmuLcd* lcd, int* cols, int* rows)
  * ----------------------------------------
  * returns: number of horizontal pixels in the display
  */
-VR_LCD_EMU_DLLEXPORT int vrEmuLcdNumPixelsX(VrEmuLcd* lcd)
+VR_EMU_LCD_DLLEXPORT int vrEmuLcdNumPixelsX(VrEmuLcd* lcd)
 {
   return lcd->pixelsWidth;
 }
@@ -893,7 +893,7 @@ VR_LCD_EMU_DLLEXPORT int vrEmuLcdNumPixelsX(VrEmuLcd* lcd)
  * ----------------------------------------
  * returns: number of vertical pixels in the display
  */
-VR_LCD_EMU_DLLEXPORT int vrEmuLcdNumPixelsY(VrEmuLcd* lcd)
+VR_EMU_LCD_DLLEXPORT int vrEmuLcdNumPixelsY(VrEmuLcd* lcd)
 {
   return lcd->pixelsHeight;
 }
@@ -908,7 +908,7 @@ VR_LCD_EMU_DLLEXPORT int vrEmuLcdNumPixelsY(VrEmuLcd* lcd)
  *  1 = pixel on
  *
  */
-VR_LCD_EMU_DLLEXPORT char vrEmuLcdPixelState(VrEmuLcd* lcd, int x, int y)
+VR_EMU_LCD_DLLEXPORT char vrEmuLcdPixelState(VrEmuLcd* lcd, int x, int y)
 {
   int offset = y * lcd->pixelsWidth + x;
   if (offset >= 0 && offset < lcd->numPixels)
