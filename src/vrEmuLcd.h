@@ -38,30 +38,30 @@ typedef struct vrEmuLcd_s VrEmuLcd;
 /* PUBLIC CONSTANTS
  * ---------------------------------------- */
 
-const uint8_t LCD_CMD_CLEAR = 0x01;
-const uint8_t LCD_CMD_HOME = 0x02;
-const uint8_t LCD_CMD_ENTRY_MODE = 0x04;
-const uint8_t LCD_CMD_ENTRY_MODE_INCREMENT = 0x02;
-const uint8_t LCD_CMD_ENTRY_MODE_DECREMENT = 0x00;
-const uint8_t LCD_CMD_ENTRY_MODE_SHIFT = 0x01;
-const uint8_t LCD_CMD_DISPLAY = 0x08;
-const uint8_t LCD_CMD_DISPLAY_ON = 0x04;
-const uint8_t LCD_CMD_DISPLAY_CURSOR = 0x02;
-const uint8_t LCD_CMD_DISPLAY_CURSOR_BLINK = 0x01;
-const uint8_t LCD_CMD_SHIFT = 0x10;
-const uint8_t LCD_CMD_SHIFT_CURSOR = 0x00;
-const uint8_t LCD_CMD_SHIFT_DISPLAY = 0x08;
-const uint8_t LCD_CMD_SHIFT_LEFT = 0x00;
-const uint8_t LCD_CMD_SHIFT_RIGHT = 0x04;
-const uint8_t LCD_CMD_FUNCTION = 0x20;
-const uint8_t LCD_CMD_FUNCTION_LCD_1LINE = 0x00;
-const uint8_t LCD_CMD_FUNCTION_LCD_2LINE = 0x08;
-const uint8_t LCD_CMD_FUNCTION_EXT_MODE = 0x04;
-const uint8_t LCD_CMD_FUNCTION_STD_MODE = 0x00;
-const uint8_t LCD_CMD_EXT_FUNCTION_GFX = 0x02;
-const uint8_t LCD_CMD_EXT_FUNCTION_STD = 0x00;
-const uint8_t LCD_CMD_SET_CGRAM_ADDR = 0x40;
-const uint8_t LCD_CMD_SET_DRAM_ADDR = 0x80;
+static const uint8_t LCD_CMD_CLEAR = 0x01;
+static const uint8_t LCD_CMD_HOME = 0x02;
+static const uint8_t LCD_CMD_ENTRY_MODE = 0x04;
+static const uint8_t LCD_CMD_ENTRY_MODE_INCREMENT = 0x02;
+static const uint8_t LCD_CMD_ENTRY_MODE_DECREMENT = 0x00;
+static const uint8_t LCD_CMD_ENTRY_MODE_SHIFT = 0x01;
+static const uint8_t LCD_CMD_DISPLAY = 0x08;
+static const uint8_t LCD_CMD_DISPLAY_ON = 0x04;
+static const uint8_t LCD_CMD_DISPLAY_CURSOR = 0x02;
+static const uint8_t LCD_CMD_DISPLAY_CURSOR_BLINK = 0x01;
+static const uint8_t LCD_CMD_SHIFT = 0x10;
+static const uint8_t LCD_CMD_SHIFT_CURSOR = 0x00;
+static const uint8_t LCD_CMD_SHIFT_DISPLAY = 0x08;
+static const uint8_t LCD_CMD_SHIFT_LEFT = 0x00;
+static const uint8_t LCD_CMD_SHIFT_RIGHT = 0x04;
+static const uint8_t LCD_CMD_FUNCTION = 0x20;
+static const uint8_t LCD_CMD_FUNCTION_LCD_1LINE = 0x00;
+static const uint8_t LCD_CMD_FUNCTION_LCD_2LINE = 0x08;
+static const uint8_t LCD_CMD_FUNCTION_EXT_MODE = 0x04;
+static const uint8_t LCD_CMD_FUNCTION_STD_MODE = 0x00;
+static const uint8_t LCD_CMD_EXT_FUNCTION_GFX = 0x02;
+static const uint8_t LCD_CMD_EXT_FUNCTION_STD = 0x00;
+static const uint8_t LCD_CMD_SET_CGRAM_ADDR = 0x40;
+static const uint8_t LCD_CMD_SET_DRAM_ADDR = 0x80;
 
 
 typedef enum
