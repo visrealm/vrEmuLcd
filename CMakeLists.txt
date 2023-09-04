@@ -14,10 +14,19 @@ if (NOT BUILD_SHARED_LIBS)
 	add_definitions(-DVR_EMU_LCD_STATIC)
 endif()
 
-
 project(vrEmuLcd)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/)
+
+if (PROJECT_IS_TOP_LEVEL)
+	if(MSVC)
+	  add_compile_options(/W4 /WX)
+	  add_compile_options(/arch:AVX2 /Ox)
+	else()
+	  add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+	  add_compile_options(-march=native)
+	endif()
+endif()
 
 include(CTest)
 

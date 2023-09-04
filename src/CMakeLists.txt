@@ -1,5 +1,5 @@
 
-if (DEFINED EMSCRIPTEN)
+if (PROJECT_IS_TOP_LEVEL AND DEFINED EMSCRIPTEN)
 	add_executable(vrEmuLcd vrEmuLcd.c)
 	set_target_properties(vrEmuLcd PROPERTIES COMPILE_FLAGS "-Os -s SIDE_MODULE=1 ")
 	set_target_properties(vrEmuLcd PROPERTIES LINK_FLAGS    "-Os -s EXPORT_NAME='vrEmuLcdModule' -s EXPORTED_RUNTIME_METHODS=['ccall','cwrap'] --no-entry")

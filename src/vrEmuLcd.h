@@ -13,61 +13,56 @@
 #define _VR_EMU_LCD_H_
 
 #ifdef __EMSCRIPTEN__
- #include <emscripten.h>
- #define VR_EMU_LCD_DLLEXPORT EMSCRIPTEN_KEEPALIVE
- #define VR_EMU_LCD_DLLEXPORT_CONST extern
+#include <emscripten.h>
+#define VR_EMU_LCD_DLLEXPORT EMSCRIPTEN_KEEPALIVE
 #elif VR_EMU_LCD_COMPILING_DLL
- #define VR_EMU_LCD_DLLEXPORT __declspec(dllexport)
+#define VR_EMU_LCD_DLLEXPORT __declspec(dllexport)
 #elif defined WIN32 && !defined VR_EMU_LCD_STATIC
- #define VR_EMU_LCD_DLLEXPORT __declspec(dllimport)
+#define VR_EMU_LCD_DLLEXPORT __declspec(dllimport)
 #else
- #define VR_EMU_LCD_STATIC 1
- #ifdef __cplusplus
-  #define VR_EMU_LCD_DLLEXPORT extern "C"
- #else
-  #define VR_EMU_LCD_DLLEXPORT extern
- #endif
+#define VR_EMU_LCD_STATIC 1
+#ifdef __cplusplus
+#define VR_EMU_LCD_DLLEXPORT extern "C"
+#else
+#define VR_EMU_LCD_DLLEXPORT extern
 #endif
-
-#ifndef VR_EMU_LCD_DLLEXPORT_CONST 
-#define VR_EMU_LCD_DLLEXPORT_CONST  VR_EMU_LCD_DLLEXPORT
 #endif
-
 
 #include <stdint.h>
 
-/* PRIVATE DATA STRUCTURE
- * ---------------------------------------- */
+ /* PRIVATE DATA STRUCTURE
+  * ---------------------------------------- */
 struct vrEmuLcd_s;
 typedef struct vrEmuLcd_s VrEmuLcd;
 
 /* PUBLIC CONSTANTS
  * ---------------------------------------- */
-VR_EMU_LCD_DLLEXPORT_CONST const uint8_t LCD_CMD_CLEAR;
-VR_EMU_LCD_DLLEXPORT_CONST const uint8_t LCD_CMD_HOME;
 
-VR_EMU_LCD_DLLEXPORT_CONST const uint8_t LCD_CMD_ENTRY_MODE;
-VR_EMU_LCD_DLLEXPORT_CONST const uint8_t LCD_CMD_ENTRY_MODE_INCREMENT;
-VR_EMU_LCD_DLLEXPORT_CONST const uint8_t LCD_CMD_ENTRY_MODE_DECREMENT;
-VR_EMU_LCD_DLLEXPORT_CONST const uint8_t LCD_CMD_ENTRY_MODE_SHIFT;
+const uint8_t LCD_CMD_CLEAR = 0x01;
+const uint8_t LCD_CMD_HOME = 0x02;
+const uint8_t LCD_CMD_ENTRY_MODE = 0x04;
+const uint8_t LCD_CMD_ENTRY_MODE_INCREMENT = 0x02;
+const uint8_t LCD_CMD_ENTRY_MODE_DECREMENT = 0x00;
+const uint8_t LCD_CMD_ENTRY_MODE_SHIFT = 0x01;
+const uint8_t LCD_CMD_DISPLAY = 0x08;
+const uint8_t LCD_CMD_DISPLAY_ON = 0x04;
+const uint8_t LCD_CMD_DISPLAY_CURSOR = 0x02;
+const uint8_t LCD_CMD_DISPLAY_CURSOR_BLINK = 0x01;
+const uint8_t LCD_CMD_SHIFT = 0x10;
+const uint8_t LCD_CMD_SHIFT_CURSOR = 0x00;
+const uint8_t LCD_CMD_SHIFT_DISPLAY = 0x08;
+const uint8_t LCD_CMD_SHIFT_LEFT = 0x00;
+const uint8_t LCD_CMD_SHIFT_RIGHT = 0x04;
+const uint8_t LCD_CMD_FUNCTION = 0x20;
+const uint8_t LCD_CMD_FUNCTION_LCD_1LINE = 0x00;
+const uint8_t LCD_CMD_FUNCTION_LCD_2LINE = 0x08;
+const uint8_t LCD_CMD_FUNCTION_EXT_MODE = 0x04;
+const uint8_t LCD_CMD_FUNCTION_STD_MODE = 0x00;
+const uint8_t LCD_CMD_EXT_FUNCTION_GFX = 0x02;
+const uint8_t LCD_CMD_EXT_FUNCTION_STD = 0x00;
+const uint8_t LCD_CMD_SET_CGRAM_ADDR = 0x40;
+const uint8_t LCD_CMD_SET_DRAM_ADDR = 0x80;
 
-VR_EMU_LCD_DLLEXPORT_CONST const uint8_t LCD_CMD_DISPLAY;
-VR_EMU_LCD_DLLEXPORT_CONST const uint8_t LCD_CMD_DISPLAY_ON;
-VR_EMU_LCD_DLLEXPORT_CONST const uint8_t LCD_CMD_DISPLAY_CURSOR;
-VR_EMU_LCD_DLLEXPORT_CONST const uint8_t LCD_CMD_DISPLAY_CURSOR_BLINK;
-
-VR_EMU_LCD_DLLEXPORT_CONST const uint8_t LCD_CMD_SHIFT;
-VR_EMU_LCD_DLLEXPORT_CONST const uint8_t LCD_CMD_SHIFT_CURSOR;
-VR_EMU_LCD_DLLEXPORT_CONST const uint8_t LCD_CMD_SHIFT_DISPLAY;
-VR_EMU_LCD_DLLEXPORT_CONST const uint8_t LCD_CMD_SHIFT_LEFT;
-VR_EMU_LCD_DLLEXPORT_CONST const uint8_t LCD_CMD_SHIFT_RIGHT;
-
-VR_EMU_LCD_DLLEXPORT_CONST const uint8_t LCD_CMD_FUNCTION;
-VR_EMU_LCD_DLLEXPORT_CONST const uint8_t LCD_CMD_FUNCTION_LCD_1LINE;
-VR_EMU_LCD_DLLEXPORT_CONST const uint8_t LCD_CMD_FUNCTION_LCD_2LINE;
-
-VR_EMU_LCD_DLLEXPORT_CONST const uint8_t LCD_CMD_SET_CGRAM_ADDR;
-VR_EMU_LCD_DLLEXPORT_CONST const uint8_t LCD_CMD_SET_DRAM_ADDR;
 
 typedef enum
 {
@@ -78,14 +73,14 @@ typedef enum
 /* PUBLIC INTERFACE
  * ---------------------------------------- */
 
-/* Function:  vrEmuLcdNew
- * --------------------
- * create a new LCD
- *
- * cols: number of display columns  (8 to 40)
- * rows: number of display rows (1, 2 or 4)
- * rom:  character rom to load
- */
+ /* Function:  vrEmuLcdNew
+  * --------------------
+  * create a new LCD
+  *
+  * cols: number of display columns  (8 to 40)
+  * rows: number of display rows (1, 2 or 4)
+  * rom:  character rom to load
+  */
 VR_EMU_LCD_DLLEXPORT
 VrEmuLcd* vrEmuLcdNew(int width, int height, vrEmuLcdCharacterRom rom);
 
@@ -125,7 +120,7 @@ void vrEmuLcdWriteByte(VrEmuLcd* lcd, uint8_t data);
  * str: the string to write.
  */
 VR_EMU_LCD_DLLEXPORT
-void vrEmuLcdWriteString(VrEmuLcd* lcd, const char *str);
+void vrEmuLcdWriteString(VrEmuLcd* lcd, const char* str);
 
 
 /* Function:  vrEmuLcdGetDataOffset
@@ -150,7 +145,7 @@ uint8_t vrEmuLcdReadByte(VrEmuLcd* lcd);
 /* Function:  vrEmuLcdReadByteNoInc
  * --------------------
  * read a byte from the lcd (RS is high, R/W is high)
- * don't update the address/scroll 
+ * don't update the address/scroll
  *
  * returns: the data (DB0 -> DB7) at the current address
  */
@@ -179,7 +174,7 @@ uint8_t vrEmuLcdReadAddress(VrEmuLcd* lcd);
  *    16 - 255 rom
  */
 VR_EMU_LCD_DLLEXPORT
-const uint8_t *vrEmuLcdCharBits(VrEmuLcd* lcd, uint8_t c);
+const uint8_t* vrEmuLcdCharBits(VrEmuLcd* lcd, uint8_t c);
 
 /* Function:  vrEmuLcdUpdatePixels
  * ----------------------------------------
@@ -194,21 +189,21 @@ void vrEmuLcdUpdatePixels(VrEmuLcd* lcd);
  * get the size of the entire display in pixels (including unused border pixels)
  */
 VR_EMU_LCD_DLLEXPORT
-void vrEmuLcdNumPixels(VrEmuLcd *lcd, int* width, int* height);
+void vrEmuLcdNumPixels(VrEmuLcd* lcd, int* width, int* height);
 
 /* Function:  vrEmuLcdNumPixelsX
  * ----------------------------------------
  * returns: number of horizontal pixels in the display
  */
 VR_EMU_LCD_DLLEXPORT
-int vrEmuLcdNumPixelsX(VrEmuLcd *lcd);
+int vrEmuLcdNumPixelsX(VrEmuLcd* lcd);
 
 /* Function:  vrEmuLcdNumPixelsY
  * ----------------------------------------
  * returns: number of vertical pixels in the display
  */
 VR_EMU_LCD_DLLEXPORT
-int vrEmuLcdNumPixelsY(VrEmuLcd *lcd);
+int vrEmuLcdNumPixelsY(VrEmuLcd* lcd);
 
 /* Function:  charvrEmuLcdPixelState
  * ----------------------------------------
@@ -220,6 +215,6 @@ int vrEmuLcdNumPixelsY(VrEmuLcd *lcd);
  *
  */
 VR_EMU_LCD_DLLEXPORT
-char vrEmuLcdPixelState(VrEmuLcd *lcd, int x, int y);
+char vrEmuLcdPixelState(VrEmuLcd* lcd, int x, int y);
 
 #endif // _VR_EMU_LCD_H_
