@@ -18,19 +18,17 @@ project(vrEmuLcd)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/)
 
-if (PROJECT_IS_TOP_LEVEL)
-	if(MSVC)
-	  add_compile_options(/W4 /WX)
-	else()
-	  add_compile_options(-Wall -Wextra -Wpedantic -Werror)
-	  add_compile_options(-march=native)
-	endif()
+if(MSVC)
+  add_compile_options(/W4 /WX)
+else()
+  add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+  add_compile_options(-march=native)
 endif()
 
 include(CTest)
 
 add_subdirectory(src)
 
-if (NOT DEFINED EMSCRIPTEN)
-add_subdirectory(test)
+if (PROJECT_IS_TOP_LEVEL)
+	add_subdirectory(test)
 endif()
