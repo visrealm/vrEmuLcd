@@ -1,0 +1,43 @@
+name: build-wasm
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  BUILD_TYPE: Release
+  OUTPUT_DIR: build_wasm
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+
+    - name: Setup Ninja
+      uses: ashutoshvarma/setup-ninja@master
+      with:
+        # ninja version to download. Default: 1.10.0
+        version: 1.10.0
+          
+    - name: Setup emscripten
+      working-directory: ${{ github.workspace }}
+      run: ./emconfig.bat ${{ env.OUTPUT_DIR }}
+        
+    - name: Build
+      # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
+      run: cmake --build ${{ env.OUTPUT_DIR }} --config ${{ env.BUILD_TYPE }}
+ 
+    - name: Archive build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: wasm-build
+        path: ${{ env.OUTPUT_DIR }}/bin
