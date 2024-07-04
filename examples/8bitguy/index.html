@@ -35,6 +35,8 @@
   <img id="lcd_box" src="lcd_box.png" style="display:none;" alt="lcd background" />
   <img id="switch_up" src="switch_up.png" style="display:none;" alt="switch up" />
   <img id="switch_dn" src="switch_dn.png" style="display:none;" alt="switch dn" />
+  <img id="bit_on" src="bit_on.png" style="display:none;" alt="bit on" />
+  <img id="bit_off" src="bit_off.png" style="display:none;" alt="bit off" />
   <img id="button_dn" src="button_dn.png" style="display:none;" alt="button dn" />
   <script src="https://code.jquery.com/jquery-1.12.4.min.js"
     integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous">
@@ -101,6 +103,8 @@
     var imgLcdBox = document.getElementById("lcd_box");
     var imgSwitchUp = document.getElementById("switch_up");
     var imgSwitchDn = document.getElementById("switch_dn");
+    var imgBitOn = document.getElementById("bit_on");
+    var imgBitOff = document.getElementById("bit_off");
     var imgButtonDn = document.getElementById("button_dn");
 
     var dataSwitches = [{
@@ -197,7 +201,7 @@
         ctx.drawImage(imgLcdBox, xOff, yOff, imgLcdBox.width * scale, imgLcdBox.height * scale);
 
         for (var i = 0; i < dataSwitches.length; ++i) {
-          var swImg = dataSwitches[i].s ? imgSwitchUp : imgSwitchDn;
+          var swImg = dataSwitches[i].s ? imgBitOn : imgBitOff;
 
           ctx.drawImage(swImg, xOff + dataSwitches[i].x * scale, yOff + dataSwitches[i].y * scale,
             swImg.width * scale, swImg.height * scale);
