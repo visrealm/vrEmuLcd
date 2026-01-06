@@ -4,7 +4,7 @@
 #define LCD_WIDTH 16
 #define LCD_HEIGHT 2
 
-int main()
+int main(void)
 {
 	VrEmuLcd *lcd = vrEmuLcdNew(LCD_WIDTH, LCD_HEIGHT, EmuLcdRomA00);
 
@@ -40,3 +40,4 @@ int main()
 	
 	vrEmuLcdDestroy(lcd);
 }
+
