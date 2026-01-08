@@ -33,10 +33,12 @@ if(MSVC)
   add_compile_options(/W4 /WX)
 else()
   add_compile_options(-Wall -Wextra -Wpedantic -Werror)
-  if (NOT DEFINED EMSCRIPTEN)
+  if (NOT VR_EMU_LCD_USING_EMSDK)
     add_compile_options(-march=native)
   endif()
 endif()
+
+message(STATUS "VR_EMU_LCD_USING_EMSDK=${VR_EMU_LCD_USING_EMSDK} VR_EMU_LCD_BUILD_WASM=${VR_EMU_LCD_BUILD_WASM}")
 
 include(CTest)
 

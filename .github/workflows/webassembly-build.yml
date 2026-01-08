@@ -45,7 +45,8 @@ jobs:
       run: |
         cmake -S . -B build/wasm \
           -DCMAKE_TOOLCHAIN_FILE=$EM_TOOLCHAIN \
-          -DCMAKE_BUILD_TYPE=${{ inputs.build_type }}
+          -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} \
+          -DVR_EMU_LCD_BUILD_WASM=ON
 
     - name: Build WebAssembly
       run: cmake --build build/wasm --target vrEmuLcdWasm --config ${{ inputs.build_type }}
