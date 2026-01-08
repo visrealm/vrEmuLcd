@@ -31,11 +31,11 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/)
 
 if(MSVC)
   add_compile_options(/W4 /WX)
+elseif(VR_EMU_LCD_USING_EMSDK)
+  # Emscripten builds: rely on toolchain defaults to avoid MSVC-style flag translation.
 else()
   add_compile_options(-Wall -Wextra -Wpedantic -Werror)
-  if (NOT VR_EMU_LCD_USING_EMSDK)
-    add_compile_options(-march=native)
-  endif()
+  add_compile_options(-march=native)
 endif()
 
 message(STATUS "VR_EMU_LCD_USING_EMSDK=${VR_EMU_LCD_USING_EMSDK} VR_EMU_LCD_BUILD_WASM=${VR_EMU_LCD_BUILD_WASM}")
