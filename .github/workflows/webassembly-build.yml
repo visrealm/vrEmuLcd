@@ -4,14 +4,14 @@ on:
   workflow_dispatch: 
   push: 
     branches: [ "main" ]
-  pull_request:
+  pull_request: 
     branches: [ "main" ]
 
 jobs:
   build-wasm:
-    runs-on: ubuntu-latest
+    runs-on:  ubuntu-latest
 
-    steps:
+    steps: 
     - uses: actions/checkout@v4
 
     - name: Setup Emscripten
@@ -24,27 +24,34 @@ jobs:
         emcc --version
         echo "EMSDK=$EMSDK"
 
+    - name: Create wrapper CMakeLists.txt
+      run: |
+        cat > CMakeLists.wrapper.txt << 'EOF'
+        cmake_minimum_required(VERSION 3.22)
+        project(vrEmuLcdWrapper)
+        add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR} vrEmuLcd)
+        EOF
+
     - name: Configure CMake with Emscripten
       run: |
         emcmake cmake -B build \
           -DCMAKE_BUILD_TYPE=Release \
-          -DBUILD_TESTING=OFF \
-          -DCMAKE_TOOLCHAIN_FILE=$EMSDK/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake
+          -DCMAKE_TOOLCHAIN_FILE=$EMSDK/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake \
+          -S . 
 
-    - name: Build WebAssembly
+    - name: Build WebAssembly  
       run: |
-        cmake --build build --config Release
+        cd build && make VERBOSE=1
 
     - name:  List build artifacts
       run: |
         echo "Build directory contents:"
-        ls -lR build/bin/
+        ls -lR build/bin/ || ls -lR build/
 
     - name: Upload WebAssembly artifacts
       uses: actions/upload-artifact@v4
       with:
         name: wasm-binaries
         path: |
-          build/bin/*.wasm
-          build/bin/*.js
+          build/bin/*
         retention-days: 30
