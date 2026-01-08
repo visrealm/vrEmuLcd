@@ -1,5 +1,5 @@
 
-name: multi-platform-build-and-test
+name: Multi-platform Build and Test
 
 on:
   workflow_dispatch:
