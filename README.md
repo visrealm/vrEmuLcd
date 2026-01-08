@@ -1,3 +1,8 @@
+| Target | Windows | Ubuntu | macOS |
+| --- | --- | --- | --- |
+| Native | <a href="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-windows.yml"><img src="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-windows.yml/badge.svg"/></a> | <a href="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-ubuntu.yml"><img src="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-ubuntu.yml/badge.svg"/></a> | <a href="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-macos.yml"><img src="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-macos.yml/badge.svg"/></a> |
+| WebAssembly | <a href="https://github.com/visrealm/vrEmuLcd/actions/workflows/webassembly-windows.yml"><img src="https://github.com/visrealm/vrEmuLcd/actions/workflows/webassembly-windows.yml/badge.svg"/></a> | <a href="https://github.com/visrealm/vrEmuLcd/actions/workflows/webassembly-ubuntu.yml"><img src="https://github.com/visrealm/vrEmuLcd/actions/workflows/webassembly-ubuntu.yml/badge.svg"/></a> | <a href="https://github.com/visrealm/vrEmuLcd/actions/workflows/webassembly-macos.yml"><img src="https://github.com/visrealm/vrEmuLcd/actions/workflows/webassembly-macos.yml/badge.svg"/></a> |
+
 # vrEmuLcd - HD44780 Character LCD Emulator
 
 Core engine written in C with a flexible Web front-end.
@@ -7,11 +12,6 @@ This Character LCD Emulator can be used to emulate most standard LCD displays.
 It accepts and responds to most commands listed in the [HD44780 datasheet](https://www.sparkfun.com/datasheets/LCD/HD44780.pdf)
 
 It also now support most commands for a 128x64 graphics LCD [12864B datasheet](https://www.exploreembedded.com/wiki/images/7/77/QC12864B.pdf)
-
-| Target | Windows | Ubuntu | macOS |
-| --- | --- | --- | --- |
-| Native | <a href="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-windows.yml"><img src="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-windows.yml/badge.svg"/></a> | <a href="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-ubuntu.yml"><img src="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-ubuntu.yml/badge.svg"/></a> | <a href="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-macos.yml"><img src="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-macos.yml/badge.svg"/></a> |
-| WebAssembly | <a href="https://github.com/visrealm/vrEmuLcd/actions/workflows/webassembly-windows.yml"><img src="https://github.com/visrealm/vrEmuLcd/actions/workflows/webassembly-windows.yml/badge.svg"/></a> | <a href="https://github.com/visrealm/vrEmuLcd/actions/workflows/webassembly-ubuntu.yml"><img src="https://github.com/visrealm/vrEmuLcd/actions/workflows/webassembly-ubuntu.yml/badge.svg"/></a> | <a href="https://github.com/visrealm/vrEmuLcd/actions/workflows/webassembly-macos.yml"><img src="https://github.com/visrealm/vrEmuLcd/actions/workflows/webassembly-macos.yml/badge.svg"/></a> |
 
 ## Screenshots:
 
