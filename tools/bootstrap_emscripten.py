@@ -29,7 +29,8 @@ def log(msg: str) -> None:
 
 
 def run(cmd, cwd=None) -> None:
-    result = subprocess.run(cmd, cwd=cwd)
+    # Route subprocess stdout/stderr to stderr so stdout remains clean for env captures.
+    result = subprocess.run(cmd, cwd=cwd, stdout=sys.stderr, stderr=sys.stderr, text=True)
     if result.returncode != 0:
         raise SystemExit(result.returncode)
 
