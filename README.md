@@ -4,6 +4,7 @@
 | --- | --- | --- |
 | Ubuntu | <a href="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-ubuntu.yml"><img src="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-ubuntu.yml/badge.svg"/></a> | <a href="https://github.com/visrealm/vrEmuLcd/actions/workflows/webassembly-ubuntu.yml"><img src="https://github.com/visrealm/vrEmuLcd/actions/workflows/webassembly-ubuntu.yml/badge.svg"/></a> |
 | Windows | <a href="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-windows.yml"><img src="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-windows.yml/badge.svg"/></a> | <a href="https://github.com/visrealm/vrEmuLcd/actions/workflows/webassembly-windows.yml"><img src="https://github.com/visrealm/vrEmuLcd/actions/workflows/webassembly-windows.yml/badge.svg"/></a> |
+| macOS | <a href="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-macos.yml"><img src="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-macos.yml/badge.svg"/></a> | <a href="https://github.com/visrealm/vrEmuLcd/actions/workflows/webassembly-macos.yml"><img src="https://github.com/visrealm/vrEmuLcd/actions/workflows/webassembly-macos.yml/badge.svg"/></a> |
 
 Core engine written in C with a flexible Web front-end.
 
