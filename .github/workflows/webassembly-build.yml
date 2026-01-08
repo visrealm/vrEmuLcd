@@ -1,0 +1,49 @@
+name: Build WebAssembly
+
+on:
+  workflow_dispatch: 
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-wasm:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Emscripten
+      uses: mymindstorm/setup-emsdk@v14
+      with:
+        version: 'latest'
+
+    - name: Verify Emscripten installation
+      run: |
+        emcc --version
+        echo "EMSDK=$EMSDK"
+
+    - name: Configure CMake with Emscripten
+      run: |
+        emcmake cmake -B build \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_TOOLCHAIN_FILE=$EMSDK/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake
+
+    - name: Build WebAssembly
+      run: |
+        cmake --build build --config Release
+
+    - name: List build artifacts
+      run: |
+        echo "Build directory contents:"
+        ls -lR build/bin/
+
+    - name: Upload WebAssembly artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: wasm-binaries
+        path: |
+          build/bin/*.wasm
+          build/bin/*.js
+        retention-days: 30
