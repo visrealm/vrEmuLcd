@@ -2,9 +2,11 @@ add_library(vrEmuLcd vrEmuLcd.c)
 
 # Warning flags tuned per toolchain to avoid MSVC-style translations when using Emscripten on Windows.
 set(_vr_warning_flags "")
-if (CMAKE_C_COMPILER_ID MATCHES "MSVC" OR CMAKE_C_SIMULATE_ID STREQUAL "MSVC")
+if (CMAKE_C_SIMULATE_ID STREQUAL "MSVC")
   set(_vr_warning_flags /W4)
-elseif (NOT VR_EMU_LCD_USING_EMSDK OR (CMAKE_C_COMPILER_ID MATCHES "Clang" AND NOT CMAKE_C_SIMULATE_ID STREQUAL "MSVC"))
+elseif (NOT VR_EMU_LCD_USING_EMSDK)
+  set(_vr_warning_flags -Wall -Wextra -Wpedantic)
+elseif (VR_EMU_LCD_USING_EMSDK AND NOT CMAKE_C_SIMULATE_ID STREQUAL "MSVC")
   set(_vr_warning_flags -Wall -Wextra -Wpedantic)
 endif()
 if (_vr_warning_flags)
