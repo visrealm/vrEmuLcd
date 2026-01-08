@@ -1,6 +1,9 @@
 # vrEmuLcd - HD44780 Character LCD Emulator
 
-<a href="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-multi-platform.yml"><img src="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-multi-platform.yml/badge.svg"/></a>
+| Platform | Native | WebAssembly |
+| --- | --- | --- |
+| Ubuntu | <a href="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-ubuntu.yml"><img src="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-ubuntu.yml/badge.svg"/></a> | <a href="https://github.com/visrealm/vrEmuLcd/actions/workflows/webassembly-ubuntu.yml"><img src="https://github.com/visrealm/vrEmuLcd/actions/workflows/webassembly-ubuntu.yml/badge.svg"/></a> |
+| Windows | <a href="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-windows.yml"><img src="https://github.com/visrealm/vrEmuLcd/actions/workflows/cmake-windows.yml/badge.svg"/></a> | <a href="https://github.com/visrealm/vrEmuLcd/actions/workflows/webassembly-windows.yml"><img src="https://github.com/visrealm/vrEmuLcd/actions/workflows/webassembly-windows.yml/badge.svg"/></a> |
 
 Core engine written in C with a flexible Web front-end.
 
