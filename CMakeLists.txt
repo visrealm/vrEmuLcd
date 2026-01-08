@@ -39,6 +39,19 @@ endif()
 
 message(STATUS "VR_EMU_LCD_USING_EMSDK=${VR_EMU_LCD_USING_EMSDK} VR_EMU_LCD_BUILD_WASM=${VR_EMU_LCD_BUILD_WASM}")
 
+# If Emscripten is driving a MSVC-style generator (common on Windows), strip GNU warning flags
+# that MSVC cannot parse (e.g., -Wextra) from the toolchain-provided defaults.
+if (VR_EMU_LCD_USING_EMSDK AND (MSVC OR CMAKE_C_SIMULATE_ID STREQUAL "MSVC"))
+  foreach(lang C CXX)
+    if (DEFINED CMAKE_${lang}_FLAGS)
+      string(REPLACE "-Wall" "" CMAKE_${lang}_FLAGS "${CMAKE_${lang}_FLAGS}")
+      string(REPLACE "-Wextra" "" CMAKE_${lang}_FLAGS "${CMAKE_${lang}_FLAGS}")
+      string(REPLACE "-Wpedantic" "" CMAKE_${lang}_FLAGS "${CMAKE_${lang}_FLAGS}")
+      set(CMAKE_${lang}_FLAGS "${CMAKE_${lang}_FLAGS}" CACHE STRING "" FORCE)
+    endif()
+  endforeach()
+endif()
+
 include(CTest)
 
 add_subdirectory(src)
