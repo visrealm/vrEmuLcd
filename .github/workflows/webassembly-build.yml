@@ -18,6 +18,11 @@ on:
         required: false
         default: "ubuntu-latest"
         type: string
+      generator:
+        description: "CMake generator"
+        required: false
+        default: "Ninja"
+        type: string
 
 defaults:
   run:
@@ -44,6 +49,7 @@ jobs:
     - name: Configure CMake (Emscripten)
       run: |
         cmake -S . -B build/wasm \
+          -G "${{ inputs.generator }}" \
           -DCMAKE_TOOLCHAIN_FILE=$EM_TOOLCHAIN \
           -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} \
           -DVR_EMU_LCD_BUILD_WASM=ON

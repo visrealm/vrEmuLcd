@@ -15,3 +15,4 @@ jobs:
       emsdk_version: latest
       build_type: Release
       runner: windows-latest
+      generator: Ninja
