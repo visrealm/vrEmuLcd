@@ -8,7 +8,7 @@ endif()
 
 target_include_directories (vrEmuLcd INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 
-if (EMSCRIPTEN AND VR_EMU_LCD_BUILD_WASM)
+if ((VR_EMU_LCD_USING_EMSDK OR CMAKE_SYSTEM_NAME STREQUAL "Emscripten") AND VR_EMU_LCD_BUILD_WASM)
   add_executable(vrEmuLcdWasm vrEmuLcd.c)
   target_compile_options(vrEmuLcdWasm PRIVATE -Oz)
   target_link_options(vrEmuLcdWasm PRIVATE
