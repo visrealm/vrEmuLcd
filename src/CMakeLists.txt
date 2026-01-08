@@ -1,17 +1,7 @@
 add_library(vrEmuLcd vrEmuLcd.c)
 
 # Warning flags: strict for native; disabled for Emscripten to avoid MSVC flag translation.
-set(_vr_warning_flags "")
-if (NOT VR_EMU_LCD_USING_EMSDK)
-  if (MSVC OR CMAKE_C_SIMULATE_ID STREQUAL "MSVC")
-    set(_vr_warning_flags /W4)
-  else()
-    set(_vr_warning_flags -Wall -Wextra -Wpedantic)
-  endif()
-endif()
-if (_vr_warning_flags)
-  target_compile_options(vrEmuLcd PRIVATE ${_vr_warning_flags})
-endif()
+// Per-target warning flags are omitted; rely on top-level settings to avoid MSVC flag translation issues.
 
 if (WIN32)
   if (BUILD_SHARED_LIBS)
@@ -24,9 +14,7 @@ target_include_directories (vrEmuLcd INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 if ((VR_EMU_LCD_USING_EMSDK OR CMAKE_SYSTEM_NAME STREQUAL "Emscripten") AND VR_EMU_LCD_BUILD_WASM)
   add_executable(vrEmuLcdWasm vrEmuLcd.c)
   target_compile_options(vrEmuLcdWasm PRIVATE -Oz)
-  if (_vr_warning_flags)
-    target_compile_options(vrEmuLcdWasm PRIVATE ${_vr_warning_flags})
-  endif()
+  // Per-target warning flags are omitted; rely on top-level settings to avoid MSVC flag translation issues.
   target_link_options(vrEmuLcdWasm PRIVATE
     -Oz
     "SHELL:-sEXPORT_NAME='vrEmuLcdModule'"

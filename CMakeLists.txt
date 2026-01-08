@@ -29,7 +29,7 @@ project(vrEmuLcd)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/)
 
-if(MSVC)
+if (MSVC OR CMAKE_C_SIMULATE_ID STREQUAL "MSVC")
   if (NOT VR_EMU_LCD_USING_EMSDK)
     add_compile_options(/W4 /WX)
   endif()
