@@ -2,11 +2,14 @@ add_library(vrEmuLcd vrEmuLcd.c)
 
 # Warning flags tuned per toolchain to avoid MSVC-style translations when using Emscripten on Windows.
 set(_vr_warning_flags "")
-if (CMAKE_C_SIMULATE_ID STREQUAL "MSVC")
-  set(_vr_warning_flags /W4)
+if (CMAKE_C_COMPILER_FRONTEND_VARIANT STREQUAL "MSVC" OR CMAKE_C_SIMULATE_ID STREQUAL "MSVC")
+  if (NOT VR_EMU_LCD_USING_EMSDK)
+    set(_vr_warning_flags /W4)
+  endif()
 elseif (NOT VR_EMU_LCD_USING_EMSDK)
   set(_vr_warning_flags -Wall -Wextra -Wpedantic)
-elseif (VR_EMU_LCD_USING_EMSDK AND NOT CMAKE_C_SIMULATE_ID STREQUAL "MSVC")
+else()
+  # Emscripten with non-MSVC frontend (e.g. Ninja/clang).
   set(_vr_warning_flags -Wall -Wextra -Wpedantic)
 endif()
 if (_vr_warning_flags)
@@ -30,7 +33,7 @@ if ((VR_EMU_LCD_USING_EMSDK OR CMAKE_SYSTEM_NAME STREQUAL "Emscripten") AND VR_E
   target_link_options(vrEmuLcdWasm PRIVATE
     -Oz
     "SHELL:-sEXPORT_NAME='vrEmuLcdModule'"
-    "SHELL:-sEXTRA_EXPORTED_RUNTIME_METHODS=['ccall','cwrap']"
+    "SHELL:-sEXPORTED_RUNTIME_METHODS=['ccall','cwrap']"
     "SHELL:--no-entry"
   )
   set_target_properties(vrEmuLcdWasm PROPERTIES
