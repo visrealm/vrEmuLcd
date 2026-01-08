@@ -84,6 +84,31 @@ for (int y = 0; y < vrEmuLcdNumPixelsY(lcd); ++y) {
 <script src="https://visrealm.github.io/vrEmuLcd/bin/vrEmuLcdWasm.js"></script>
 ```
 
+## Example
+
+```js
+<canvas id="lcd"></canvas>
+...
+<script>
+    var canv = document.getElementById('lcd');
+    var ctx = canv.getContext('2d');
+
+    vrEmuLcd.setLoadedCallback(function () {
+
+      // create a new LCD object
+      var lcd = vrEmuLcd.newLCD(16, 2, vrEmuLcd.CharacterRom.Eurpoean);
+
+      // set up the display
+      lcd.sendCommand(LCD_CMD_DISPLAY | LCD_CMD_DISPLAY_ON);
+
+      lcd.writeString("Hello, World!");
+
+      lcd.render(ctx, 0, 0, 800, 400);
+    });
+</script>
+```
+
+
 ## Building
 
 ### Native (desktop)
@@ -122,29 +147,6 @@ cmake --build build/wasm --target vrEmuLcdWasm --config Release
 
 Use `--force` to ignore an existing `EMSCRIPTEN` environment and re-install locally, or `--version <tag>` to pin a specific emsdk version.
     
-## Example
-
-```js
-<canvas id="lcd"></canvas>
-...
-<script>
-    var canv = document.getElementById('lcd');
-    var ctx = canv.getContext('2d');
-
-    vrEmuLcd.setLoadedCallback(function () {
-
-      // create a new LCD object
-      var lcd = vrEmuLcd.newLCD(16, 2, vrEmuLcd.CharacterRom.Eurpoean);
-
-      // set up the display
-      lcd.sendCommand(LCD_CMD_DISPLAY | LCD_CMD_DISPLAY_ON);
-
-      lcd.writeString("Hello, World!");
-
-      lcd.render(ctx, 0, 0, 800, 400);
-    });
-</script>
-```
 
 ## LCD API
 

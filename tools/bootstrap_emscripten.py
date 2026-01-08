@@ -24,7 +24,8 @@ EMSDK_ZIP = "https://github.com/emscripten-core/emsdk/archive/refs/heads/main.zi
 
 
 def log(msg: str) -> None:
-    print(msg, flush=True)
+    # Emit log messages to stderr so stdout remains the toolchain path only.
+    print(msg, flush=True, file=sys.stderr)
 
 
 def run(cmd, cwd=None) -> None:
