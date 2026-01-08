@@ -1,0 +1,17 @@
+name: WebAssembly Build (Windows)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  wasm:
+    uses: ./.github/workflows/webassembly-build.yml
+    secrets: inherit
+    with:
+      emsdk_version: latest
+      build_type: Release
+      runner: windows-latest

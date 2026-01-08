@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.22)
 set(CMAKE_C_STANDARD 11)
 
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+option(VR_EMU_LCD_BUILD_WASM "Build WebAssembly artifacts when using Emscripten" ${EMSCRIPTEN})
 
 if (DEFINED EMSCRIPTEN)
 	set(BUILD_SHARED_LIBS OFF)

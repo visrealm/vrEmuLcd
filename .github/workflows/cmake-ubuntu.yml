@@ -1,0 +1,19 @@
+name: CMake Build (Ubuntu)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  ubuntu:
+    uses: ./.github/workflows/cmake-multi-platform.yml
+    secrets: inherit
+    with:
+      matrix: |
+        [
+          {"os":"ubuntu-latest","c_compiler":"gcc","cpp_compiler":"g++","build_type":"Release"},
+          {"os":"ubuntu-latest","c_compiler":"clang","cpp_compiler":"clang++","build_type":"Release"}
+        ]

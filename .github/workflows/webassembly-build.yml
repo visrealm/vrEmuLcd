@@ -1,57 +1,64 @@
-name: Build WebAssembly
+name: WebAssembly Build (core)
 
 on:
-  workflow_dispatch: 
-  push: 
-    branches: [ "main" ]
-  pull_request: 
-    branches: [ "main" ]
+  workflow_call:
+    inputs:
+      emsdk_version:
+        description: "emsdk version to install"
+        required: false
+        default: "latest"
+        type: string
+      build_type:
+        description: "CMake build type"
+        required: false
+        default: "Release"
+        type: string
+      runner:
+        description: "GitHub runner label"
+        required: false
+        default: "ubuntu-latest"
+        type: string
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   build-wasm:
-    runs-on:  ubuntu-latest
+    runs-on:  ${{ inputs.runner }}
 
     steps: 
     - uses: actions/checkout@v4
 
-    - name: Setup Emscripten
-      uses:  mymindstorm/setup-emsdk@v14
+    - name: Set up Python
+      uses: actions/setup-python@v5
       with:
-        version: 'latest'
+        python-version: '3.x'
 
-    - name:  Verify Emscripten installation
+    - name: Bootstrap Emscripten toolchain
       run: |
-        emcc --version
-        echo "EMSDK=$EMSDK"
+        mkdir -p build
+        TOOLCHAIN=$(python tools/bootstrap_emscripten.py --emsdk-dir build/emsdk --version "${{ inputs.emsdk_version }}")
+        echo "EM_TOOLCHAIN=$TOOLCHAIN" >> $GITHUB_ENV
 
-    - name: Create wrapper CMakeLists.txt
+    - name: Configure CMake (Emscripten)
       run: |
-        cat > CMakeLists.wrapper.txt << 'EOF'
-        cmake_minimum_required(VERSION 3.22)
-        project(vrEmuLcdWrapper)
-        add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR} vrEmuLcd)
-        EOF
+        cmake -S . -B build/wasm \
+          -DCMAKE_TOOLCHAIN_FILE=$EM_TOOLCHAIN \
+          -DCMAKE_BUILD_TYPE=${{ inputs.build_type }}
 
-    - name: Configure CMake with Emscripten
-      run: |
-        emcmake cmake -B build \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_TOOLCHAIN_FILE=$EMSDK/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake \
-          -S . 
-
-    - name: Build WebAssembly  
-      run: |
-        cd build && make VERBOSE=1
+    - name: Build WebAssembly
+      run: cmake --build build/wasm --target vrEmuLcdWasm --config ${{ inputs.build_type }}
 
     - name:  List build artifacts
       run: |
         echo "Build directory contents:"
-        ls -lR build/bin/ || ls -lR build/
+        ls -lR build/wasm/bin/ || ls -lR build/wasm/
 
     - name: Upload WebAssembly artifacts
       uses: actions/upload-artifact@v4
       with:
         name: wasm-binaries
         path: |
-          build/bin/*
+          build/wasm/bin/*
         retention-days: 30

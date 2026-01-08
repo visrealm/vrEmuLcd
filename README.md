@@ -83,6 +83,44 @@ for (int y = 0; y < vrEmuLcdNumPixelsY(lcd); ++y) {
 <script src="https://visrealm.github.io/vrEmuLcd/src/vrEmuLcd.js"></script>
 <script src="https://visrealm.github.io/vrEmuLcd/bin/vrEmuLcdWasm.js"></script>
 ```
+
+## Building
+
+### Native (desktop)
+```bash
+cmake -S . -B build/native -DCMAKE_BUILD_TYPE=Release
+cmake --build build/native --config Release
+ctest --test-dir build/native --build-config Release
+```
+
+### WebAssembly with CMake
+
+Configure with the Emscripten toolchain and build the `vrEmuLcdWasm` target to produce the WebAssembly bundle:
+
+```bash
+emcmake cmake -S . -B build/wasm -DCMAKE_BUILD_TYPE=Release
+cmake --build build/wasm --target vrEmuLcdWasm --config Release
+```
+
+Artifacts will be written to `build/wasm/bin/` (the loader script is `vrEmuLcdWasm.js` with an accompanying `.wasm` file). Use `-DVR_EMU_LCD_BUILD_WASM=OFF` if you want to skip the wasm target when using Emscripten.
+
+If Emscripten is not installed, a platform-independent bootstrap helper can install it and print the toolchain file path. Examples:
+
+```bash
+# POSIX shells
+TOOLCHAIN=$(python tools/bootstrap_emscripten.py --emsdk-dir build/emsdk)
+cmake -S . -B build/wasm -DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN" -DCMAKE_BUILD_TYPE=Release
+cmake --build build/wasm --target vrEmuLcdWasm --config Release
+```
+
+```powershell
+# PowerShell
+$toolchain = python tools/bootstrap_emscripten.py --emsdk-dir build/emsdk
+cmake -S . -B build/wasm -DCMAKE_TOOLCHAIN_FILE=$toolchain -DCMAKE_BUILD_TYPE=Release
+cmake --build build/wasm --target vrEmuLcdWasm --config Release
+```
+
+Use `--force` to ignore an existing `EMSCRIPTEN` environment and re-install locally, or `--version <tag>` to pin a specific emsdk version.
     
 ## Example
 

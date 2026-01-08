@@ -1,0 +1,18 @@
+name: CMake Build (Windows)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  windows:
+    uses: ./.github/workflows/cmake-multi-platform.yml
+    secrets: inherit
+    with:
+      matrix: |
+        [
+          {"os":"windows-latest","c_compiler":"cl","cpp_compiler":"cl","build_type":"Release"}
+        ]
