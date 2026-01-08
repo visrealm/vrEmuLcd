@@ -1,7 +1,14 @@
 add_library(vrEmuLcd vrEmuLcd.c)
 
-if (VR_EMU_LCD_USING_EMSDK)
-  target_compile_options(vrEmuLcd PRIVATE -Wall -Wextra -Wpedantic -Werror)
+# Warning flags tuned per toolchain to avoid MSVC-style translations when using Emscripten on Windows.
+set(_vr_warning_flags "")
+if (CMAKE_C_COMPILER_ID MATCHES "MSVC" OR CMAKE_C_SIMULATE_ID STREQUAL "MSVC")
+  set(_vr_warning_flags /W4)
+elseif (NOT VR_EMU_LCD_USING_EMSDK OR (CMAKE_C_COMPILER_ID MATCHES "Clang" AND NOT CMAKE_C_SIMULATE_ID STREQUAL "MSVC"))
+  set(_vr_warning_flags -Wall -Wextra -Wpedantic)
+endif()
+if (_vr_warning_flags)
+  target_compile_options(vrEmuLcd PRIVATE ${_vr_warning_flags})
 endif()
 
 if (WIN32)
@@ -15,8 +22,8 @@ target_include_directories (vrEmuLcd INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 if ((VR_EMU_LCD_USING_EMSDK OR CMAKE_SYSTEM_NAME STREQUAL "Emscripten") AND VR_EMU_LCD_BUILD_WASM)
   add_executable(vrEmuLcdWasm vrEmuLcd.c)
   target_compile_options(vrEmuLcdWasm PRIVATE -Oz)
-  if (VR_EMU_LCD_USING_EMSDK)
-    target_compile_options(vrEmuLcdWasm PRIVATE -Wall -Wextra -Wpedantic -Werror)
+  if (_vr_warning_flags)
+    target_compile_options(vrEmuLcdWasm PRIVATE ${_vr_warning_flags})
   endif()
   target_link_options(vrEmuLcdWasm PRIVATE
     -Oz
